@@ -13,7 +13,7 @@ function updateProfileButtons(){
 function authCard({setup=false,users=[]}={}){
   const available=(users.length?users:teamUsers).filter(user=>setup?user.role==="admin":user.passwordSet!==false);
   const shell=document.createElement("div");shell.className="login-gate";
-  shell.innerHTML=`<section class="login-card"><div class="login-brand"><img src="/app-icon.png" alt=""><div><small>DESPACHO MOLINERO</small><h1>${setup?"Configurar acceso":"Iniciar sesión"}</h1></div></div><p>${setup?"Asigna la primera contraseña a Manuel o Álvaro. Después podrás establecer las del resto desde Mi cuenta.":"Accede con tu usuario y contraseña personal."}</p><form><label>Usuario<select required>${available.map(user=>`<option value="${user.id}">${user.name}</option>`).join("")}</select></label>${setup?'<label>Clave de configuración<input name="setupPassword" type="password" autocomplete="current-password" required></label>':""}<label>Contraseña<input name="password" type="password" autocomplete="current-password" minlength="6" required></label><p class="login-error" role="alert"></p><button class="primary" type="submit">${setup?"Guardar y entrar":"Entrar"}</button></form></section>`;
+  shell.innerHTML=`<section class="login-card"><div class="login-brand"><img src="/app-icon.png" alt=""><div><small>PP ASESORES</small><h1>${setup?"Configurar acceso":"Iniciar sesión"}</h1></div></div><p>${setup?"Asigna la primera contraseña a Manuel o Álvaro. Después podrás establecer las del resto desde Mi cuenta.":"Accede con tu usuario y contraseña personal."}</p><form><label>Usuario<select required>${available.map(user=>`<option value="${user.id}">${user.name}</option>`).join("")}</select></label>${setup?'<label>Clave de configuración<input name="setupPassword" type="password" autocomplete="current-password" required></label>':""}<label>Contraseña<input name="password" type="password" autocomplete="current-password" minlength="6" required></label><p class="login-error" role="alert"></p><button class="primary" type="submit">${setup?"Guardar y entrar":"Entrar"}</button></form></section>`;
   document.body.appendChild(shell);document.documentElement.classList.remove("auth-pending");
   shell.querySelector("form").addEventListener("submit",async event=>{event.preventDefault();const form=event.currentTarget,button=form.querySelector("button"),error=form.querySelector(".login-error");error.textContent="";button.disabled=true;button.textContent="Comprobando…";try{const payload={userId:form.querySelector("select").value,password:form.password.value};if(setup)payload.setupPassword=form.setupPassword.value;const result=await apiJson(setup?"/api/auth/setup":"/api/auth/login",{method:"POST",body:JSON.stringify(payload)});signedInUser=result.user;shell.remove();updateProfileButtons()}catch(reason){error.textContent=reason.message}finally{button.disabled=false;button.textContent=setup?"Guardar y entrar":"Entrar"}});
 }
@@ -47,7 +47,7 @@ let currentEntries=[];
 let folderHistory=[];
 let activeFolderConfig=null;
 let currentDirectoryHandle=null;
-const FOLDER_VIEW_STORAGE_KEY="app-am-folder-view";
+const FOLDER_VIEW_STORAGE_KEY="app-pp-folder-view";
 let folderViewMode=localStorage.getItem(FOLDER_VIEW_STORAGE_KEY)==="list"?"list":"grid";
 const defaultClientFolders=["ACTAS","CIERRES ANUALES","CONTABILIDAD","DECLARACIONES","ESCRITURAS","LIBROS OFICIALES","OTRA DOCUMENTACIÓN"];
 
@@ -211,16 +211,16 @@ function drawManagementModelList(query=""){
 async function openManagementModel(id){
   const model=MANAGEMENT_MODELS.find(item=>item.id===id),workspace=document.querySelector("#modelWorkspace");if(!model||!workspace)return;
   let clients=[];try{clients=await getAllClientMetadata()}catch{}
-  const saved=localStorage.getItem(`app-am-model-${id}`)||model.body;
+  const saved=localStorage.getItem(`app-pp-model-${id}`)||model.body;
   workspace.className="management-model-editor";workspace.innerHTML=`<div class="management-editor-heading"><div><p class="eyebrow">${model.category}</p><h3>${model.title}</h3></div><button type="button" class="secondary-button" id="resetManagementModel">Restaurar</button></div><div class="management-model-data"><label>Cliente<select id="managementModelClient"><option value="">Rellenar manualmente</option>${clients.sort((a,b)=>(a.name||a.id).localeCompare(b.name||b.id,"es")).map(client=>`<option value="${escapeHtml(client.id)}">${escapeHtml(client.name||client.id)}</option>`).join("")}</select></label><label>Nombre / sociedad<input id="managementModelName" type="text" placeholder="Nombre o razón social"></label><label>NIF / CIF<input id="managementModelCif" type="text" maxlength="9" placeholder="B12345678"></label><label>Representante<input id="managementModelRepresentative" type="text" placeholder="Nombre y apellidos"></label></div><label class="management-model-document">Contenido editable<textarea id="managementModelBody" spellcheck="true"></textarea></label><div class="management-editor-actions"><small>Revisa siempre los datos y adapta el texto al caso concreto antes de firmar.</small><button type="button" class="secondary-button" id="saveManagementModel">Guardar cambios</button><button type="button" class="primary blue-button" id="printManagementModel">Imprimir / PDF</button></div>`;
   const body=document.querySelector("#managementModelBody");body.value=saved;
   document.querySelector("#managementModelClient").addEventListener("change",event=>{const client=clients.find(item=>item.id===event.target.value);if(!client)return;document.querySelector("#managementModelName").value=client.name||client.id||"";document.querySelector("#managementModelCif").value=client.cif||"";document.querySelector("#managementModelRepresentative").value=client.representative||""});
-  document.querySelector("#resetManagementModel").addEventListener("click",()=>{body.value=model.body;localStorage.removeItem(`app-am-model-${id}`)});
-  document.querySelector("#saveManagementModel").addEventListener("click",event=>{localStorage.setItem(`app-am-model-${id}`,body.value);event.currentTarget.textContent="Guardado ✓";setTimeout(()=>event.currentTarget.textContent="Guardar cambios",1300)});
+  document.querySelector("#resetManagementModel").addEventListener("click",()=>{body.value=model.body;localStorage.removeItem(`app-pp-model-${id}`)});
+  document.querySelector("#saveManagementModel").addEventListener("click",event=>{localStorage.setItem(`app-pp-model-${id}`,body.value);event.currentTarget.textContent="Guardado ✓";setTimeout(()=>event.currentTarget.textContent="Guardar cambios",1300)});
   document.querySelector("#printManagementModel").addEventListener("click",()=>printManagementText(model.title,fillManagementModel(body.value)));
 }
 function fillManagementModel(text){const values={CLIENTE:document.querySelector("#managementModelName")?.value||"[CLIENTE]",SOCIEDAD:document.querySelector("#managementModelName")?.value||"[SOCIEDAD]",CIF_CLIENTE:document.querySelector("#managementModelCif")?.value||"[CIF_CLIENTE]",REPRESENTANTE:document.querySelector("#managementModelRepresentative")?.value||"[REPRESENTANTE]",FECHA:new Date().toLocaleDateString("es-ES")};return Object.entries(values).reduce((result,[key,value])=>result.replaceAll(`[${key}]`,value),text)}
-function printManagementText(title,text){const printWindow=window.open("","_blank");if(!printWindow)return;printWindow.opener=null;printWindow.document.write(`<!doctype html><html lang="es"><head><meta charset="utf-8"><title>${escapeHtml(title)}</title><style>body{font:15px/1.65 Arial,sans-serif;color:#172033;max-width:820px;margin:45px auto;padding:0 35px}h1{font-size:22px;border-bottom:2px solid #14279b;padding-bottom:12px}pre{font:inherit;white-space:pre-wrap}ol{padding-left:22px}small{color:#667085}@media print{body{margin:0}}</style></head><body><h1>${escapeHtml(title)}</h1><pre>${escapeHtml(text)}</pre></body></html>`);printWindow.document.close();printWindow.focus();setTimeout(()=>printWindow.print(),250)}
+function printManagementText(title,text){const printWindow=window.open("","_blank");if(!printWindow)return;printWindow.opener=null;printWindow.document.write(`<!doctype html><html lang="es"><head><meta charset="utf-8"><title>${escapeHtml(title)}</title><style>body{font:15px/1.65 Arial,sans-serif;color:#172033;max-width:820px;margin:45px auto;padding:0 35px}h1{font-size:22px;border-bottom:2px solid #07213d;padding-bottom:12px}pre{font:inherit;white-space:pre-wrap}ol{padding-left:22px}small{color:#667085}@media print{body{margin:0}}</style></head><body><h1>${escapeHtml(title)}</h1><pre>${escapeHtml(text)}</pre></body></html>`);printWindow.document.close();printWindow.focus();setTimeout(()=>printWindow.print(),250)}
 let workCatalog=null;
 let activeWorkArea="01";
 function renderWorkProcedures(){
@@ -465,7 +465,7 @@ function filterContacts(event){
 
 
 let courtesyObjectUrls=[];
-function courtesyStorageKey(client){return"app-am-courtesy-"+client}
+function courtesyStorageKey(client){return"app-pp-courtesy-"+client}
 function getCourtesyData(client){try{return JSON.parse(localStorage.getItem(courtesyStorageKey(client))||"{}")}catch{return{}}}
 function saveCourtesyData(client,data){localStorage.setItem(courtesyStorageKey(client),JSON.stringify(data))}
 function courtesyClientKey(name){return normalizeFiscalClient(name).toLocaleLowerCase("es")}
@@ -534,7 +534,7 @@ async function uploadCourtesyDocument(index,file){
 const workers=["Manuel Molinero","Álvaro Molinero","Francisco Molinero","Araceli Frías","Jesús Carratalá"];
 
 
-const TASKS_STORAGE_KEY="app-am-tasks";
+const TASKS_STORAGE_KEY="app-pp-tasks";
 const taskStatuses=[
   {id:"pending",label:"Pte. Inicio"},
   {id:"progress",label:"En proceso"},
@@ -828,8 +828,8 @@ async function renderTasks(){
 }
 
 
-const CALENDAR_STORAGE_KEY="app-am-calendar-reminders";
-let calendarView=localStorage.getItem("app-am-calendar-view")==="week"?"week":"month";
+const CALENDAR_STORAGE_KEY="app-pp-calendar-reminders";
+let calendarView=localStorage.getItem("app-pp-calendar-view")==="week"?"week":"month";
 let calendarAnchor=new Date();
 function localDateKey(date){return`${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,"0")}-${String(date.getDate()).padStart(2,"0")}`}
 function calendarMonday(date){const value=new Date(date.getFullYear(),date.getMonth(),date.getDate()),offset=(value.getDay()+6)%7;value.setDate(value.getDate()-offset);return value}
@@ -898,7 +898,7 @@ function renderCalendar(){
   document.querySelector("#newCalendarItem").addEventListener("click",()=>openCalendarItem(localDateKey(new Date())));  document.querySelector("#calendarPrevious").addEventListener("click",()=>{if(calendarView==="month"){calendarAnchor.setDate(1);calendarAnchor.setMonth(calendarAnchor.getMonth()-1)}else calendarAnchor.setDate(calendarAnchor.getDate()-7);refreshCalendar()});
   document.querySelector("#calendarNext").addEventListener("click",()=>{if(calendarView==="month"){calendarAnchor.setDate(1);calendarAnchor.setMonth(calendarAnchor.getMonth()+1)}else calendarAnchor.setDate(calendarAnchor.getDate()+7);refreshCalendar()});
   document.querySelector("#calendarToday").addEventListener("click",()=>{calendarAnchor=new Date();refreshCalendar()});
-  document.querySelectorAll("[data-calendar-view]").forEach(button=>button.addEventListener("click",()=>{calendarView=button.dataset.calendarView;localStorage.setItem("app-am-calendar-view",calendarView);refreshCalendar()}));
+  document.querySelectorAll("[data-calendar-view]").forEach(button=>button.addEventListener("click",()=>{calendarView=button.dataset.calendarView;localStorage.setItem("app-pp-calendar-view",calendarView);refreshCalendar()}));
   document.querySelectorAll("[data-close-calendar]").forEach(button=>button.addEventListener("click",closeCalendarItem));
   document.querySelector("#calendarForm").addEventListener("submit",event=>{event.preventDefault();const form=event.currentTarget,items=getCalendarItems(),data={title:document.querySelector("#calendarItemTitle").value.trim(),date:document.querySelector("#calendarItemDate").value,time:document.querySelector("#calendarItemTime").value,type:document.querySelector("#calendarItemType").value,assigned:document.querySelector("#calendarItemAssigned").value,notes:document.querySelector("#calendarItemNotes").value.trim()},existing=items.find(item=>item.id===form.dataset.itemId);if(existing)Object.assign(existing,data);else items.push({id:`calendar-${Date.now()}-${Math.random().toString(36).slice(2,7)}`,...data});saveCalendarItems(items);closeCalendarItem();refreshCalendar()});
   document.querySelector("#deleteCalendarItem").addEventListener("click",()=>{const id=document.querySelector("#calendarForm").dataset.itemId;if(!id)return;saveCalendarItems(getCalendarItems().filter(item=>item.id!==id));closeCalendarItem();refreshCalendar()});
@@ -941,7 +941,7 @@ const annualClosingStages=[
   {id:"review",label:"Revisión contable",tasks:[]},
   {id:"annual",label:"Cierre anual",tasks:annualClosingFiles.map(file=>file.label)}
 ];
-function annualClosingKey(clientId,year=new Date().getFullYear()){return `app-am-annual-closing-${year}-${clientId}`}
+function annualClosingKey(clientId,year=new Date().getFullYear()){return `app-pp-annual-closing-${year}-${clientId}`}
 function annualClosingState(clientId,year=new Date().getFullYear()){
   try{
     const stored=JSON.parse(localStorage.getItem(annualClosingKey(clientId,year))||"{}");
@@ -1593,8 +1593,8 @@ function renderTaxDeadlines(model,period,state){
     <span class="tax-status ${state.type}">${state.label}</span>
     ${d.provisional?'<p class="deadline-note">Periodo de diciembre/4.º trimestre: fechas calculadas con las reglas generales de la AEAT. Pendiente de confirmación en el calendario oficial de 2027.</p>':""}`;
 }
-function declarationKey(model,period,client,year=2026){return "app-am-declaration-"+year+"-"+model+"-"+period+"-"+client}
-function declarationData(model,period,client,year=2026){try{const saved=localStorage.getItem(declarationKey(model,period,client,year));const legacy=year===2026?localStorage.getItem("app-am-declaration-"+model+"-"+period+"-"+client):null;return JSON.parse(saved||legacy||"{}")}catch{return{}}}
+function declarationKey(model,period,client,year=2026){return "app-pp-declaration-"+year+"-"+model+"-"+period+"-"+client}
+function declarationData(model,period,client,year=2026){try{const saved=localStorage.getItem(declarationKey(model,period,client,year));const legacy=year===2026?localStorage.getItem("app-pp-declaration-"+model+"-"+period+"-"+client):null;return JSON.parse(saved||legacy||"{}")}catch{return{}}}
 function workerOptions(selected){return '<option value="">Seleccionar…</option>'+workers.map(name=>`<option value="${escapeHtml(name)}" ${selected===name?"selected":""}>${escapeHtml(name)}</option>`).join("")}
 async function loadTaxModel(model){
   const body=document.querySelector("#taxRows"),state=taxWindowState(sourceTaxModel(model),activeTaxQuarter,activeTaxType);
@@ -1647,7 +1647,7 @@ let activeHistoryYear=2025;
 let activeHistoryType="trimestral";
 let activeHistoryQuarter="1T";
 let activeHistoryModel="111";
-const historyControlColumnsKey="app-am-history-control-columns";
+const historyControlColumnsKey="app-pp-history-control-columns";
 
 function historyControlColumns(){try{return JSON.parse(localStorage.getItem(historyControlColumnsKey)||"[]")}catch{return[]}}
 function historyTableHeaders(){
@@ -2018,7 +2018,7 @@ function filterFolders(event){
 
 function folderDb(){
   return new Promise((resolve,reject)=>{
-    const request=indexedDB.open("app-am-folders",3);
+    const request=indexedDB.open("app-pp-folders",3);
     request.onupgradeneeded=()=>{if(!request.result.objectStoreNames.contains("handles"))request.result.createObjectStore("handles");if(!request.result.objectStoreNames.contains("signatureMetadata"))request.result.createObjectStore("signatureMetadata",{keyPath:"id"});if(!request.result.objectStoreNames.contains("clientMetadata"))request.result.createObjectStore("clientMetadata",{keyPath:"id"})};
     request.onsuccess=()=>resolve(request.result);
     request.onerror=()=>reject(request.error);
@@ -2088,8 +2088,8 @@ const chatWorkers=["Manuel Molinero","Álvaro Molinero","Francisco Molinero","Ar
 let activeChatWorker=null;
 
 function workerInitials(name){return name.split(" ").slice(0,2).map(part=>part[0]).join("").toUpperCase()}
-function getChatMessages(name){try{return JSON.parse(localStorage.getItem("app-am-chat-"+name)||"[]")}catch{return[]}}
-function saveChatMessages(name,messages){localStorage.setItem("app-am-chat-"+name,JSON.stringify(messages))}
+function getChatMessages(name){try{return JSON.parse(localStorage.getItem("app-pp-chat-"+name)||"[]")}catch{return[]}}
+function saveChatMessages(name,messages){localStorage.setItem("app-pp-chat-"+name,JSON.stringify(messages))}
 
 function createWorkerChat(){
   const widget=document.createElement("div");
