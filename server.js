@@ -173,6 +173,7 @@ const appIcon = Buffer.from("iVBORw0KGgoAAAANSUhEUgAAAgAAAAIACAIAAAB7GkOtAAAAIGN
 
 http.createServer((req, res) => {
   const requestPath = req.url.split("?")[0];
+  if (requestPath === "/health") return json(res, 200, { ok: true });
   if (requestPath === "/api/auth/status" && req.method === "GET") {
     const user = currentUser(req), users = loadUsers();
     return json(res, 200, { user: user ? publicUser(user) : null, needsSetup: !users.some(item => item.passwordHash), users: users.map(publicUser) });
@@ -248,9 +249,9 @@ http.createServer((req, res) => {
     res.writeHead(200, { "Content-Type": "image/png", "Cache-Control": "public, max-age=3600" });
     return res.end(appIcon);
   }
-  const pathname = req.url === "/" ? "/index.html" : req.url.split("?")[0];
-  const file = path.join(root, pathname);
-  if (!file.startsWith(root)) return res.writeHead(403).end("Forbidden");
+  const pathname = req.url === "/" ? "index.html" : req.url.split("?")[0].replace(/^\/+/, "");
+  const file = path.resolve(root, pathname);
+  if (file !== root && !file.startsWith(root + path.sep)) return res.writeHead(403).end("Forbidden");
   fs.readFile(file, (error, data) => {
     if (error) return res.writeHead(404).end("Not found");
     res.writeHead(200, { "Content-Type": types[path.extname(file)] || "application/octet-stream" });
