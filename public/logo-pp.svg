@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 300" role="img" aria-label="ProPymes Asesores Legales">
+<rect width="640" height="300" fill="transparent"/>
+<g transform="translate(267 20)">
+<path d="M0 0h52c28 0 43 14 43 36 0 22-16 38-43 38H27v39H0V51h52c11 0 17-6 17-15 0-8-6-13-17-13H0z" fill="#d2b48c"/>
+<path d="M35 18h50c30 0 47 15 47 39 0 25-18 41-48 41H63v35H35V73h48c14 0 21-6 21-16 0-10-7-16-21-16H63v25H35z" fill="#07213d"/>
+</g>
+<line x1="135" y1="145" x2="505" y2="145" stroke="#07213d" stroke-width="3"/>
+<text x="135" y="218" font-family="Georgia,Times New Roman,serif" font-size="55" letter-spacing="5"><tspan fill="#d2b48c">PRO</tspan><tspan fill="#07213d">PYMES</tspan></text>
+<text x="135" y="260" fill="#07213d" font-family="Georgia,Times New Roman,serif" font-size="25" letter-spacing="6">ASESORES LEGALES</text>
+</svg>
