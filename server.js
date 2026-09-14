@@ -245,6 +245,14 @@ http.createServer((req, res) => {
       res.end(JSON.stringify([]));
     });
   }
+  if (req.url === "/" || req.url.startsWith("/?")) {
+    const indexFile = path.resolve(root, "index.html");
+    return fs.readFile(indexFile, (error, data) => {
+      if (error) return res.writeHead(404).end("Not found");
+      res.writeHead(200, { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "no-store" });
+      res.end(data);
+    });
+  }
   if (req.url.split("?")[0] === "/app-icon.png") {
     res.writeHead(200, { "Content-Type": "image/png", "Cache-Control": "public, max-age=3600" });
     return res.end(appIcon);
