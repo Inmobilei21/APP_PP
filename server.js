@@ -249,9 +249,19 @@ http.createServer((req, res) => {
     res.writeHead(200, { "Content-Type": "image/png", "Cache-Control": "public, max-age=3600" });
     return res.end(appIcon);
   }
-  const pathname = req.url === "/" ? "index.html" : req.url.split("?")[0].replace(/^\/+/, "");
-  const file = path.resolve(root, pathname);
-  if (file !== root && !file.startsWith(root + path.sep)) return res.writeHead(403).end("Forbidden");
+  const rawPath = req.url.split("?")[0];
+  const pathname = rawPath === "/" ? "index.html" : decodeURIComponent(rawPath).replace(/^\/+/, "");
+  const file = path.join(__dirname, "public", pathname);
+  if (rawPath === "/") {
+    try {
+      const data = fs.readFileSync(path.join(__dirname, "public", "index.html"));
+      res.writeHead(200, { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "no-store" });
+      return res.end(data);
+    } catch (error) {
+      res.writeHead(500, { "Content-Type": "text/plain; charset=utf-8" });
+      return res.end("PP index unavailable: " + error.message);
+    }
+  }
   fs.readFile(file, (error, data) => {
     if (error) return res.writeHead(404).end("Not found");
     res.writeHead(200, { "Content-Type": types[path.extname(file)] || "application/octet-stream" });
