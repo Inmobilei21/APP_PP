@@ -1,12 +1,12 @@
 {
-  "name": "AM · Gestión del despacho",
-  "short_name": "APP AM",
-  "description": "Aplicación de gestión del despacho Molinero",
+  "name": "PP · Gestión del despacho",
+  "short_name": "PP",
+  "description": "Aplicación de gestión de PP Asesores",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
   "background_color": "#f5f7fb",
-  "theme_color": "#14279b",
+  "theme_color": "#07213d",
   "icons": [
     {
       "src": "/app-icon.png?v=4",
