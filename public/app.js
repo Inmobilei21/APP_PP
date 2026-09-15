@@ -1,4 +1,4 @@
-document.documentElement.classList.add("auth-pending");
+document.documentElement.classList.remove("auth-pending");
 let signedInUser=null;
 const teamUsers=[
   {id:"manuel",name:"Manuel Molinero",role:"admin"},{id:"alvaro",name:"Álvaro Molinero",role:"admin"},
@@ -25,7 +25,10 @@ function openAccountPanel(){
   shell.querySelectorAll("[data-user-id]").forEach(form=>form.onsubmit=async event=>{event.preventDefault();const button=form.querySelector("button"),message=shell.querySelector(".account-message");button.disabled=true;try{await apiJson(`/api/users/${form.dataset.userId}`,{method:"PUT",body:JSON.stringify({password:form.querySelector("input").value})});form.reset();message.textContent="Contraseña actualizada correctamente."}catch(reason){message.textContent=reason.message}finally{button.disabled=false}});
   shell.querySelector(".logout-button").onclick=async()=>{await apiJson("/api/auth/logout",{method:"POST"});location.reload()};
 }
-checkAuthentication();
+// PP: inicio de sesión desactivado; acceso directo
+signedInUser={id:"pp",name:"PP",role:"admin"};
+document.documentElement.classList.remove("auth-pending");
+updateProfileButtons();
 
 const sidebar=document.querySelector("#sidebar");
 const overlay=document.querySelector("#overlay");
