@@ -122,3 +122,12 @@ html body:not(#pp):not(#pp) .client-fiscal-header::before,html body:not(#pp):not
 html body:not(#pp):not(#pp) .client-fiscal-header *::before,html body:not(#pp):not(#pp) .client-fiscal-header *::after{color:#6b4f2a!important}
 html body:not(#pp):not(#pp) .client-fiscal-back{background:rgba(255,255,255,.32)!important;border-color:rgba(7,33,61,.16)!important}
 html body:not(#pp):not(#pp) .client-fiscal-back,html body:not(#pp):not(#pp) .client-fiscal-back *{color:#07213d!important}
+
+/* Cabecera de Documentos (área fiscal) con el menú y el logo del inicio (ver pp-cliente.js) */
+.pp-fiscal-bar,.pp-fiscal-sello{display:none}
+@media(min-width:761px){
+  html body:not(#pp):not(#pp) .client-fiscal-header .pp-fiscal-bar{display:flex!important;align-items:center;gap:24px;position:absolute;top:22px;right:34px;z-index:2;min-height:0!important;background:none!important}
+  html body:not(#pp):not(#pp) .client-fiscal-header .pp-fiscal-bar .cd2-menu{margin-left:0}
+  html body:not(#pp):not(#pp) .client-fiscal-header .pp-fiscal-sello{display:block!important;position:absolute;right:34px;bottom:50px;height:clamp(80px,6.5vw,112px);width:auto;z-index:1;content:url("/logo-pp-sand-v.png?v=pp10");filter:none!important}
+  html body:not(#pp):not(#pp) .client-fiscal-header:has(.pp-fiscal-bar) .client-fiscal-profile{display:none!important}
+}
