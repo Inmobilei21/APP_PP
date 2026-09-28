@@ -5,7 +5,7 @@
 /* Barra lateral cerrada: isotipo PP en lugar del de Molinero */
 @media(min-width:761px){
   body:not(.client-preview-mode) .sidebar:not(:hover) .brand::before{
-    background-image:url("/mark-pp-light.png?v=pp7")!important;
+    background-image:url("/mark-pp-light.png?v=pp9")!important;
     background-size:44px auto!important;
     background-position:center!important;
     filter:none!important;
@@ -34,12 +34,12 @@ html body:not(#pp):not(#pp) #sidebar nav .nav-icon::after{background:transparent
 html body:not(#pp):not(#pp) #sidebar .sidebar-footer .profile > span:first-child{background:#07213d!important;color:#fff!important}
 
 /* Logos de la barra: P blanca para contrastar con la arena */
-html body:not(#pp):not(#pp) #sidebar .brand img{content:url("/logo-pp-sand.png?v=pp7");filter:none!important}
+html body:not(#pp):not(#pp) #sidebar .brand img{content:url("/logo-pp-sand.png?v=pp9");filter:none!important}
 @media(min-width:761px){
   html body:not(#pp):not(#pp) #sidebar:not(:hover) .brand img{display:none!important}
   html body:not(#pp):not(#pp) #sidebar:not(:hover) .brand::before{
     content:""!important;display:block!important;
-    background:url("/mark-pp-sand.png?v=pp7") center/46px auto no-repeat!important;filter:none!important}
+    background:url("/mark-pp-sand.png?v=pp9") center/46px auto no-repeat!important;filter:none!important}
   html body:not(#pp):not(#pp) #sidebar:not(:hover) .brand::after{display:none!important}
 }
 
@@ -73,3 +73,52 @@ html body:not(#pp):not(#pp) .e2-logo{height:clamp(110px,9vw,160px)}
 
 /* Logo del área de cliente (escritorio) algo más grande */
 html body:not(#pp):not(#pp) .cd2 .cd2-sello.cd2-sello-logo img{height:clamp(86px,7vw,124px)}
+
+/* =====================================================================
+   Área de cliente en ARENA (en Molinero es marino): cabeceras arena,
+   textos marino y logo con la P dorada en blanco. El marino queda como acento.
+   ===================================================================== */
+html body:not(#pp):not(#pp) .cd2-cab,
+html body:not(#pp):not(#pp) .client-portal-header,
+html body:not(#pp):not(#pp) .client-fiscal-header,
+html body:not(#pp):not(#pp) .client-chat-view>header,
+html body:not(#pp):not(#pp) .client-documents-view>header{
+  background:radial-gradient(90% 140% at 85% -10%,rgba(255,255,255,.35) 0%,rgba(255,255,255,0) 55%),linear-gradient(135deg,#e4cfae 0%,#d2b48c 55%,#c4a06e 100%)!important;
+  color:#07213d!important}
+html body:not(#pp):not(#pp) .cd2-cab *,
+html body:not(#pp):not(#pp) .client-portal-header *,
+html body:not(#pp):not(#pp) .client-fiscal-header *,
+html body:not(#pp):not(#pp) .client-chat-view>header *,
+html body:not(#pp):not(#pp) .client-documents-view>header *{color:#07213d!important;text-shadow:none!important}
+html body:not(#pp):not(#pp) .cd2-cab::before,html body:not(#pp):not(#pp) .cd2-cab::after,
+html body:not(#pp):not(#pp) .client-fiscal-header::before,html body:not(#pp):not(#pp) .client-fiscal-header::after{border-color:rgba(7,33,61,.12)!important;opacity:.6}
+/* logos */
+html body:not(#pp):not(#pp) .cd2-barra>img,
+html body:not(#pp):not(#pp) .cd2-sello img,
+html body:not(#pp):not(#pp) .client-portal-header>img,
+html body:not(#pp):not(#pp) .client-fiscal-brand img{content:url("/logo-pp-sand-v.png?v=pp9");filter:none!important}
+/* textos secundarios */
+html body:not(#pp):not(#pp) .cd2-saludo small,html body:not(#pp):not(#pp) .client-fiscal-header small{color:#6b4f2a!important}
+html body:not(#pp):not(#pp) .cd2-saludo p,html body:not(#pp):not(#pp) .client-portal-header p{color:rgba(7,33,61,.78)!important}
+html body:not(#pp):not(#pp) .cd2-lema,html body:not(#pp):not(#pp) .client-fiscal-brand>span{border-color:rgba(7,33,61,.25)!important}
+/* menú, perfil y botones de la cabecera */
+html body:not(#pp):not(#pp) .cd2-menu,
+html body:not(#pp):not(#pp) .cd2-perfil,
+html body:not(#pp):not(#pp) .cd2-salir,
+html body:not(#pp):not(#pp) .client-portal-header .profile,
+html body:not(#pp):not(#pp) .client-fiscal-header button,
+html body:not(#pp):not(#pp) .client-chat-view>header button,
+html body:not(#pp):not(#pp) .client-documents-view>header button{background:rgba(255,255,255,.32)!important;border-color:rgba(7,33,61,.16)!important;box-shadow:none!important}
+html body:not(#pp):not(#pp) .cd2-menu button.on{background:#07213d!important}
+html body:not(#pp):not(#pp) .cd2-menu button.on,html body:not(#pp):not(#pp) .cd2-menu button.on *{color:#fff!important}
+html body:not(#pp):not(#pp) .cd2-perfil i,
+html body:not(#pp):not(#pp) .client-portal-header .profile>span:first-child,
+html body:not(#pp):not(#pp) .client-fiscal-header .profile>span:first-child{background:#07213d!important;color:#fff!important}
+html body:not(#pp):not(#pp) .cd2-cab::before,
+html body:not(#pp):not(#pp) .client-portal-header::before,
+html body:not(#pp):not(#pp) .client-fiscal-header::before{background:radial-gradient(circle,rgba(255,255,255,.28),transparent 65%)!important}
+html body:not(#pp):not(#pp) .client-fiscal-header *{opacity:1!important}
+html body:not(#pp):not(#pp) .client-fiscal-header::before,html body:not(#pp):not(#pp) .client-fiscal-header::after,
+html body:not(#pp):not(#pp) .client-fiscal-header *::before,html body:not(#pp):not(#pp) .client-fiscal-header *::after{color:#6b4f2a!important}
+html body:not(#pp):not(#pp) .client-fiscal-back{background:rgba(255,255,255,.32)!important;border-color:rgba(7,33,61,.16)!important}
+html body:not(#pp):not(#pp) .client-fiscal-back,html body:not(#pp):not(#pp) .client-fiscal-back *{color:#07213d!important}

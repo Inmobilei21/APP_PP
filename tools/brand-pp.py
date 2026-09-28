@@ -117,7 +117,7 @@ def rebrand(path):
         text = img_uri("mobile-logo").sub(r"\1/logo-pp.png?v=pp7\2", text)
         text = re.sub(r'(href="/(?:favicon|apple-touch-icon)\.png)\?v=\d+', r"\1?v=pp7", text)
         text = text.replace('href="/manifest.webmanifest?v=5"', 'href="/manifest.webmanifest?v=pp7"')
-        text = re.sub(r'(<link rel="stylesheet" href="/styles\.css)(\?v=[^"]*)?"', r'\1\2"><link rel="stylesheet" href="/pp-theme.css?v=pp7"', text, count=1)
+        text = re.sub(r'(<link rel="stylesheet" href="/styles\.css)(\?v=[^"]*)?"', r'\1\2"><link rel="stylesheet" href="/pp-theme.css?v=pp9"', text, count=1)
     if path.name == "app.js":
         text = img_uri("chat-brand-logo").sub(r"\1/app-icon-192.png?v=pp7\2", text)
     path.write_text(recolor(text), encoding="utf8")
@@ -178,12 +178,14 @@ def fit(im, width):
 vertical_light = load("vertical-arena-blanco.png")                     # fondos marino
 vertical_dark = recolor(vertical_light, {"white": NAVY})              # fondos claros
 horizontal_sand = recolor(load("horizontal-arena-marino.png"), {"tan": WHITE})  # barra arena: P dorada en blanco
+vertical_sand = recolor(vertical_light, {"tan": WHITE, "white": NAVY})  # cabeceras arena del área de cliente
 mark_light = first_band(vertical_light, 1)
 mark_sand = first_band(horizontal_sand, 0)
 
 fit(vertical_light, 1200).save(pub / "logo-pp-light.png", optimize=True)
 fit(vertical_dark, 1200).save(pub / "logo-pp.png", optimize=True)
 fit(horizontal_sand, 1200).save(pub / "logo-pp-sand.png", optimize=True)
+fit(vertical_sand, 1200).save(pub / "logo-pp-sand-v.png", optimize=True)
 fit(mark_light, 400).save(pub / "mark-pp-light.png", optimize=True)
 fit(mark_sand, 400).save(pub / "mark-pp-sand.png", optimize=True)
 fit(vertical_light, 1116).save(pub / "splash-logo.png", optimize=True)   # splash / cabeceras oscuras
