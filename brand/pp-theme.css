@@ -32,12 +32,12 @@ html body:not(#pp):not(#pp) #sidebar nav button:not(.active) > span:first-child{
 html body:not(#pp):not(#pp) #sidebar .sidebar-footer .profile > span:first-child{background:#07213d!important;color:#fff!important}
 
 /* Logos de la barra: P blanca para contrastar con la arena */
-html body:not(#pp):not(#pp) #sidebar .brand img{content:url("/logo-pp-sand.svg?v=pp2");filter:none!important}
+html body:not(#pp):not(#pp) #sidebar .brand img{content:url("/logo-pp-sand.svg?v=pp3");filter:none!important}
 @media(min-width:761px){
   html body:not(#pp):not(#pp) #sidebar:not(:hover) .brand img{display:none!important}
   html body:not(#pp):not(#pp) #sidebar:not(:hover) .brand::before{
     content:""!important;display:block!important;
-    background:url("/mark-pp-sand.svg?v=pp2") center/46px auto no-repeat!important;filter:none!important}
+    background:url("/mark-pp-sand.svg?v=pp3") center/46px auto no-repeat!important;filter:none!important}
   html body:not(#pp):not(#pp) #sidebar:not(:hover) .brand::after{display:none!important}
 }
 
@@ -56,6 +56,7 @@ html body:not(#pp):not(#pp) #homeNewTask{background:#d2b48c!important;color:#072
 html body:not(#pp):not(#pp) #chatLauncher *,
 html body:not(#pp):not(#pp) .m2-mas *,
 html body:not(#pp):not(#pp) #homeNewTask *{color:#07213d!important}
-html body:not(#pp):not(#pp) #sidebar .s2-grupo{color:rgba(7,33,61,.55)!important}
+@media(max-width:760px){html body:not(#pp):not(#pp) #sidebar .s2-grupo{color:rgba(7,33,61,.55)!important}}
+@media(min-width:761px){html body:not(#pp):not(#pp) #sidebar:hover .s2-grupo{color:rgba(7,33,61,.55)!important}}
 html body:not(#pp):not(#pp) #sidebar .s2-yo-txt b{color:#07213d!important}
 html body:not(#pp):not(#pp) #sidebar .s2-yo-txt small{color:rgba(7,33,61,.65)!important}
