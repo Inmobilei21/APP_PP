@@ -28,16 +28,18 @@ html body:not(#pp):not(#pp) #sidebar.s2-listo::after{background:linear-gradient(
 html body:not(#pp):not(#pp) #sidebar nav button,
 html body:not(#pp):not(#pp) #sidebar nav button *,
 html body:not(#pp):not(#pp) #sidebar .sidebar-footer *{color:#07213d!important}
-html body:not(#pp):not(#pp) #sidebar nav button:not(.active) > span:first-child{background:rgba(7,33,61,.10)!important;border-color:transparent!important;opacity:1!important}
+html body:not(#pp):not(#pp) #sidebar nav .nav-icon{background:transparent!important;border-color:transparent!important;box-shadow:none!important;opacity:1!important}
+html body:not(#pp):not(#pp) #sidebar nav .nav-icon::before,
+html body:not(#pp):not(#pp) #sidebar nav .nav-icon::after{background:transparent!important;box-shadow:none!important;border-color:transparent!important}
 html body:not(#pp):not(#pp) #sidebar .sidebar-footer .profile > span:first-child{background:#07213d!important;color:#fff!important}
 
 /* Logos de la barra: P blanca para contrastar con la arena */
-html body:not(#pp):not(#pp) #sidebar .brand img{content:url("/logo-pp-sand.svg?v=pp3");filter:none!important}
+html body:not(#pp):not(#pp) #sidebar .brand img{content:url("/logo-pp-sand.svg?v=pp4");filter:none!important}
 @media(min-width:761px){
   html body:not(#pp):not(#pp) #sidebar:not(:hover) .brand img{display:none!important}
   html body:not(#pp):not(#pp) #sidebar:not(:hover) .brand::before{
     content:""!important;display:block!important;
-    background:url("/mark-pp-sand.svg?v=pp3") center/46px auto no-repeat!important;filter:none!important}
+    background:url("/mark-pp-sand.svg?v=pp4") center/46px auto no-repeat!important;filter:none!important}
   html body:not(#pp):not(#pp) #sidebar:not(:hover) .brand::after{display:none!important}
 }
 
@@ -60,3 +62,6 @@ html body:not(#pp):not(#pp) #homeNewTask *{color:#07213d!important}
 @media(min-width:761px){html body:not(#pp):not(#pp) #sidebar:hover .s2-grupo{color:rgba(7,33,61,.55)!important}}
 html body:not(#pp):not(#pp) #sidebar .s2-yo-txt b{color:#07213d!important}
 html body:not(#pp):not(#pp) #sidebar .s2-yo-txt small{color:rgba(7,33,61,.65)!important}
+html body:not(#pp):not(#pp) #sidebar nav .holded-mark,
+html body:not(#pp):not(#pp) #sidebar nav .holded-mark::before,
+html body:not(#pp):not(#pp) #sidebar nav .holded-mark::after{background:transparent!important;box-shadow:none!important;border-color:transparent!important}
