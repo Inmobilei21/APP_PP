@@ -1,4 +1,5 @@
 const http = require("http");
+const ppDemo = require("./pp-demo-server");
 const fs = require("fs");
 const path = require("path");
 const crypto = require("crypto");
@@ -364,6 +365,7 @@ const portalDocs = require("./portal-docs")({ dataDirectory, davRequest, parseDa
 
 http.createServer((req, res) => {
   const requestPath = req.url.split("?")[0];
+  if (ppDemo(req, res, requestPath)) return;
   if (requestPath === "/api/version" && req.method === "GET") {
     return json(res, 200, { version: applicationVersion });
   }

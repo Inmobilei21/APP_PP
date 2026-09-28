@@ -1,0 +1,177 @@
+[
+ {
+  "file": "factura-2026-008.pdf",
+  "title": "Factura 2026-008",
+  "folder": "Facturas emitidas",
+  "date": "2026-02-12",
+  "path": "Facturas emitidas/2026/1T"
+ },
+ {
+  "file": "factura-2026-019.pdf",
+  "title": "Factura 2026-019",
+  "folder": "Facturas emitidas",
+  "date": "2026-03-24",
+  "path": "Facturas emitidas/2026/1T"
+ },
+ {
+  "file": "factura-2026-027.pdf",
+  "title": "Factura 2026-027",
+  "folder": "Facturas emitidas",
+  "date": "2026-05-08",
+  "path": "Facturas emitidas/2026/2T"
+ },
+ {
+  "file": "factura-2026-033.pdf",
+  "title": "Factura 2026-033",
+  "folder": "Facturas emitidas",
+  "date": "2026-06-19",
+  "path": "Facturas emitidas/2026/2T"
+ },
+ {
+  "file": "factura-2026-041.pdf",
+  "title": "Factura 2026-041",
+  "folder": "Facturas emitidas",
+  "date": "2026-09-15",
+  "path": "Facturas emitidas/2026/3T"
+ },
+ {
+  "file": "factura-2026-042.pdf",
+  "title": "Factura 2026-042",
+  "folder": "Facturas emitidas",
+  "date": "2026-09-22",
+  "path": "Facturas emitidas/2026/3T"
+ },
+ {
+  "file": "factura-2026-043.pdf",
+  "title": "Factura 2026-043",
+  "folder": "Facturas emitidas",
+  "date": "2026-09-26",
+  "path": "Facturas emitidas/2026/3T"
+ },
+ {
+  "file": "fra-asesoria-marzo.pdf",
+  "title": "Factura proveedor · marzo",
+  "folder": "Facturas recibidas",
+  "date": "2026-03-05",
+  "path": "Facturas recibidas/2026/1T"
+ },
+ {
+  "file": "fra-material-oficina-mayo.pdf",
+  "title": "Factura material de oficina · mayo",
+  "folder": "Facturas recibidas",
+  "date": "2026-05-14",
+  "path": "Facturas recibidas/2026/2T"
+ },
+ {
+  "file": "fra-suministros-septiembre.pdf",
+  "title": "Factura suministros · septiembre",
+  "folder": "Facturas recibidas",
+  "date": "2026-09-10",
+  "path": "Facturas recibidas/2026/3T"
+ },
+ {
+  "file": "fra-telefonia-septiembre.pdf",
+  "title": "Factura telefonía · septiembre",
+  "folder": "Facturas recibidas",
+  "date": "2026-09-05",
+  "path": "Facturas recibidas/2026/3T"
+ },
+ {
+  "file": "fra-alquiler-local-septiembre.pdf",
+  "title": "Factura alquiler del local · septiembre",
+  "folder": "Facturas recibidas",
+  "date": "2026-09-01",
+  "path": "Facturas recibidas/2026/3T"
+ },
+ {
+  "file": "extracto-bancario-agosto.pdf",
+  "title": "Extracto bancario · agosto 2026",
+  "folder": "Bancos",
+  "date": "2026-09-02",
+  "path": "Bancos/2026"
+ },
+ {
+  "file": "extracto-bancario-septiembre.pdf",
+  "title": "Extracto bancario · septiembre 2026",
+  "folder": "Bancos",
+  "date": "2026-09-27",
+  "path": "Bancos/2026"
+ },
+ {
+  "file": "resumen-contable-3t-2026.pdf",
+  "title": "Resumen contable · 3T 2026",
+  "folder": "Contabilidad",
+  "date": "2026-09-25",
+  "path": "Contabilidad/2026"
+ },
+ {
+  "file": "balance-sumas-saldos-3t-2026.pdf",
+  "title": "Balance de sumas y saldos · 3T 2026",
+  "folder": "Contabilidad",
+  "date": "2026-09-25",
+  "path": "Contabilidad/2026"
+ },
+ {
+  "file": "cuentas-anuales-2025.pdf",
+  "title": "Cuentas anuales 2025",
+  "folder": "Contabilidad",
+  "date": "2026-07-28",
+  "path": "Contabilidad/2026"
+ },
+ {
+  "file": "modelo-303-1t-2026.pdf",
+  "title": "Modelo 303 · 1T 2026",
+  "folder": "Declaraciones",
+  "date": "2026-04-17",
+  "path": "Declaraciones/2026/1T"
+ },
+ {
+  "file": "modelo-111-1t-2026.pdf",
+  "title": "Modelo 111 · 1T 2026",
+  "folder": "Declaraciones",
+  "date": "2026-04-17",
+  "path": "Declaraciones/2026/1T"
+ },
+ {
+  "file": "modelo-303-2t-2026.pdf",
+  "title": "Modelo 303 · 2T 2026",
+  "folder": "Declaraciones",
+  "date": "2026-07-18",
+  "path": "Declaraciones/2026/2T"
+ },
+ {
+  "file": "modelo-111-2t-2026.pdf",
+  "title": "Modelo 111 · 2T 2026",
+  "folder": "Declaraciones",
+  "date": "2026-07-18",
+  "path": "Declaraciones/2026/2T"
+ },
+ {
+  "file": "modelo-200-2025.pdf",
+  "title": "Modelo 200 · Impuesto sobre Sociedades 2025",
+  "folder": "Declaraciones",
+  "date": "2026-07-24",
+  "path": "Declaraciones/2025"
+ },
+ {
+  "file": "modelo-390-2025.pdf",
+  "title": "Modelo 390 · Resumen anual IVA 2025",
+  "folder": "Declaraciones",
+  "date": "2026-01-28",
+  "path": "Declaraciones/2025"
+ },
+ {
+  "file": "requerimiento-aeat-2026.pdf",
+  "title": "Requerimiento de información AEAT",
+  "folder": "Reclamaciones",
+  "date": "2026-06-11",
+  "path": "Reclamaciones/2026"
+ },
+ {
+  "file": "escrito-alegaciones-2026.pdf",
+  "title": "Escrito de alegaciones",
+  "folder": "Reclamaciones",
+  "date": "2026-06-24",
+  "path": "Reclamaciones/2026"
+ }
+]

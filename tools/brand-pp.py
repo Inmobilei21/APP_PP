@@ -202,4 +202,28 @@ icon(180, .16).convert("RGB").save(pub / "apple-touch-icon.png", optimize=True)
 icon(64, .12).save(pub / "favicon.png", optimize=True)
 
 shutil.copy2(BRAND / "pp-theme.css", pub / "pp-theme.css")
+
+# ---------------------------------------------------------------- 5. demostración para clientes
+# Usuario "Cliente" (contraseña en PP_DEMO_PASSWORD, por defecto "prueba"): solo vista de cliente
+# con documentos ficticios. Ver brand/demo/.
+DEMO = BRAND / "demo"
+shutil.copy2(DEMO / "pp-demo-server.js", PP / "pp-demo-server.js")
+shutil.copy2(DEMO / "pp-demo.js", pub / "pp-demo.js")
+shutil.copytree(DEMO / "pdf", pub / "demo", dirs_exist_ok=True)
+shutil.copy2(DEMO / "documentos.json", pub / "demo" / "documentos.json")
+
+html = (pub / "index.html").read_text(encoding="utf8")
+html, n = re.subn(r'(<script src="/app\.js[^"]*"></script>)', r'\1<script src="/pp-demo.js?v=pp8"></script>', html, count=1)
+assert n == 1, "No se encontró app.js en index.html"
+(pub / "index.html").write_text(html, encoding="utf8")
+
+srv = open(PP / "server.js", encoding="utf8", newline="").read()
+eol = "\r\n" if "\r\n" in srv else "\n"
+hook = 'const requestPath = req.url.split("?")[0];'
+assert hook in srv, "server.js ha cambiado: revisar el enganche de la demo"
+srv = srv.replace(hook, hook + eol + '  if (ppDemo(req, res, requestPath)) return;', 1)
+srv = srv.replace('const http = require("http");', 'const http = require("http");' + eol + 'const ppDemo = require("./pp-demo-server");', 1)
+assert "ppDemo = require" in srv
+open(PP / "server.js", "w", encoding="utf8", newline="").write(srv)
+
 print("APP_PP generado desde", AM)
