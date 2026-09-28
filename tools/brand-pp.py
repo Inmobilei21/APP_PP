@@ -117,7 +117,7 @@ def rebrand(path):
         text = img_uri("mobile-logo").sub(r"\1/logo-pp.svg\2", text)
         text = re.sub(r'(href="/(?:favicon|apple-touch-icon)\.png)\?v=\d+', r"\1?v=pp1", text)
         text = text.replace('href="/manifest.webmanifest?v=5"', 'href="/manifest.webmanifest?v=pp1"')
-        text = re.sub(r'(<link rel="stylesheet" href="/styles\.css)(\?v=[^"]*)?"', r'\1\2"><link rel="stylesheet" href="/pp-theme.css?v=pp1"', text, count=1)
+        text = re.sub(r'(<link rel="stylesheet" href="/styles\.css)(\?v=[^"]*)?"', r'\1\2"><link rel="stylesheet" href="/pp-theme.css?v=pp2"', text, count=1)
     if path.name == "app.js":
         text = img_uri("chat-brand-logo").sub(r"\1/app-icon-192.png?v=pp1\2", text)
     path.write_text(recolor(text), encoding="utf8")
@@ -140,7 +140,7 @@ readme = (PP / "README.md").read_text(encoding="utf8")
 import cairosvg
 from PIL import Image
 
-for svg in ["logo-pp.svg", "logo-pp-light.svg", "mark-pp-light.svg"]:
+for svg in ["logo-pp.svg", "logo-pp-light.svg", "logo-pp-sand.svg", "mark-pp-light.svg", "mark-pp-sand.svg"]:
     shutil.copy2(BRAND / svg, pub / svg)
 
 def svg_png(svg_path, width):

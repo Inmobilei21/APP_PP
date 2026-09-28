@@ -11,3 +11,51 @@
     filter:none!important;
   }
 }
+
+/* =====================================================================
+   Tema PP "barra arena": barra lateral arena, cabecera marino,
+   botones e iconos destacados en arena. `:not(#pp):not(#pp)` solo sube
+   la especificidad para imponerse a las reglas !important de styles.css.
+   ===================================================================== */
+html body:not(#pp):not(#pp){background-color:#f4ede5}
+html body:not(#pp):not(#pp) main{background-color:#f4ede5}
+
+/* Barra lateral arena (el fondo real lo pintan ::before/::after) */
+html body:not(#pp):not(#pp) #sidebar,
+html body:not(#pp):not(#pp) #sidebar:hover{background:linear-gradient(180deg,#e2ccaa 0%,#c9a574 100%)!important}
+html body:not(#pp):not(#pp) #sidebar.s2-listo::before,
+html body:not(#pp):not(#pp) #sidebar.s2-listo::after{background:linear-gradient(180deg,#e2ccaa 0%,#c9a574 100%)!important}
+html body:not(#pp):not(#pp) #sidebar nav button,
+html body:not(#pp):not(#pp) #sidebar nav button *,
+html body:not(#pp):not(#pp) #sidebar .sidebar-footer *{color:#07213d!important}
+html body:not(#pp):not(#pp) #sidebar nav button:not(.active) > span:first-child{background:rgba(7,33,61,.10)!important;border-color:transparent!important;opacity:1!important}
+html body:not(#pp):not(#pp) #sidebar .sidebar-footer .profile > span:first-child{background:#07213d!important;color:#fff!important}
+
+/* Logos de la barra: P blanca para contrastar con la arena */
+html body:not(#pp):not(#pp) #sidebar .brand img{content:url("/logo-pp-sand.svg?v=pp2");filter:none!important}
+@media(min-width:761px){
+  html body:not(#pp):not(#pp) #sidebar:not(:hover) .brand img{display:none!important}
+  html body:not(#pp):not(#pp) #sidebar:not(:hover) .brand::before{
+    content:""!important;display:block!important;
+    background:url("/mark-pp-sand.svg?v=pp2") center/46px auto no-repeat!important;filter:none!important}
+  html body:not(#pp):not(#pp) #sidebar:not(:hover) .brand::after{display:none!important}
+}
+
+/* Cabecera marino limpia */
+html body:not(#pp):not(#pp) .e2-cab,
+html body:not(#pp):not(#pp) .m2-hero{background:linear-gradient(135deg,#07213d 0%,#0b2a4c 100%)!important}
+
+/* Iconos de tarjetas y botones destacados en arena */
+html body:not(#pp):not(#pp) .metric-icon,
+html body:not(#pp):not(#pp) .home-activity-icon{background:#d2b48c!important}
+html body:not(#pp):not(#pp) .metric-icon *,
+html body:not(#pp):not(#pp) .home-activity-icon *{color:#07213d!important}
+html body:not(#pp):not(#pp) #chatLauncher,
+html body:not(#pp):not(#pp) .m2-mas,
+html body:not(#pp):not(#pp) #homeNewTask{background:#d2b48c!important;color:#07213d!important}
+html body:not(#pp):not(#pp) #chatLauncher *,
+html body:not(#pp):not(#pp) .m2-mas *,
+html body:not(#pp):not(#pp) #homeNewTask *{color:#07213d!important}
+html body:not(#pp):not(#pp) #sidebar .s2-grupo{color:rgba(7,33,61,.55)!important}
+html body:not(#pp):not(#pp) #sidebar .s2-yo-txt b{color:#07213d!important}
+html body:not(#pp):not(#pp) #sidebar .s2-yo-txt small{color:rgba(7,33,61,.65)!important}
