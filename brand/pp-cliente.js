@@ -28,6 +28,20 @@
     return result;
   };
 
+  // "Más info." de Otros servicios: el mismo aviso que en Inicio (servicio no contratado).
+  const fiscalBase = window.openClientFiscalArea;
+  window.openClientFiscalArea = function () {
+    const result = fiscalBase.apply(this, arguments);
+    document.querySelectorAll(".client-fiscal-overlay .client-fiscal-service-actions").forEach(actions => {
+      const info = actions.querySelector("button:first-child"), title = actions.closest("article")?.querySelector("strong")?.textContent.trim();
+      if (!info || !title || info.dataset.ppInfo) return;
+      const fresh = info.cloneNode(true); fresh.dataset.ppInfo = "1"; fresh.removeAttribute("title");
+      fresh.addEventListener("click", () => openClientUnavailable(title));
+      info.replaceWith(fresh);
+    });
+    return result;
+  };
+
   // ------------------------------------------------------------ móvil
   const isMobile = () => matchMedia("(max-width:760px)").matches;
 

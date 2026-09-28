@@ -93,10 +93,11 @@ html body:not(#pp):not(#pp) .client-documents-view>header *{color:#07213d!import
 html body:not(#pp):not(#pp) .cd2-cab::before,html body:not(#pp):not(#pp) .cd2-cab::after,
 html body:not(#pp):not(#pp) .client-fiscal-header::before,html body:not(#pp):not(#pp) .client-fiscal-header::after{border-color:rgba(7,33,61,.12)!important;opacity:.6}
 /* logos */
-html body:not(#pp):not(#pp) .cd2-barra>img,
 html body:not(#pp):not(#pp) .cd2-sello img,
-html body:not(#pp):not(#pp) .client-portal-header>img,
-html body:not(#pp):not(#pp) .client-fiscal-brand img{content:url("/logo-pp-sand-v.png?v=pp9");filter:none!important}
+html body:not(#pp):not(#pp) .client-portal-header>img{content:url("/logo-pp-sand-v.png?v=pp9");filter:none!important}
+/* esquina superior izquierda: logo horizontal oficial */
+html body:not(#pp):not(#pp) .cd2-barra>img,
+html body:not(#pp):not(#pp) .client-fiscal-brand img{content:url("/logo-pp-sand.png?v=pp12");filter:none!important;height:40px!important;width:auto!important;max-width:none!important;object-fit:contain}
 /* textos secundarios */
 html body:not(#pp):not(#pp) .cd2-saludo small,html body:not(#pp):not(#pp) .client-fiscal-header small{color:#6b4f2a!important}
 html body:not(#pp):not(#pp) .cd2-saludo p,html body:not(#pp):not(#pp) .client-portal-header p{color:rgba(7,33,61,.78)!important}
@@ -164,4 +165,10 @@ html body:not(#pp):not(#pp) .client-fiscal-back,html body:not(#pp):not(#pp) .cli
   html body:not(#pp):not(#pp) .client-chat-view .client-chat-intro{padding-top:20px}
   /* etiqueta DEMO encima de la barra */
   html body:not(#pp):not(#pp) .pp-demo-ribbon{z-index:3150!important;bottom:calc(env(safe-area-inset-bottom,0px) + 92px)!important}
+}
+
+/* Inicio del área de cliente (escritorio): misma cabecera que Documentos, en tarjeta redondeada */
+@media(min-width:761px){
+  html body:not(#pp):not(#pp) .cd2-cab{margin:14px 14px 0!important;border-radius:30px!important;overflow:hidden}
+  html body:not(#pp):not(#pp) .cd2-cab .cd2-barra>img{margin-top:6px}
 }
