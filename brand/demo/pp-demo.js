@@ -133,7 +133,7 @@
     const input = modal.querySelector("input"); input.value = storage.get(NAME_KEY); setTimeout(() => input.focus(), 50);
     modal.querySelector("form").addEventListener("submit", event => {
       event.preventDefault(); const name = input.value.trim().replace(/\s+/g, " "); if (!name) return;
-      storage.set(NAME_KEY, name); modal.remove(); applyName(name);
+      storage.set(NAME_KEY, name); modal.remove(); applyName(name); window.scrollTo(0, 0); setTimeout(() => window.scrollTo(0, 0), 300);
     });
   }
   function openDemoPanel() {

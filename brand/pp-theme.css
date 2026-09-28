@@ -188,3 +188,9 @@ html body:not(#pp):not(#pp) .pp-file-icon img{width:30px;height:auto;display:blo
 html body:not(#pp):not(#pp) .client-portal-header img{content:url("/logo-pp-sand-v.png?v=pp14");filter:none!important;opacity:1!important}
 html body:not(#pp):not(#pp) .client-portal-shell .c2-ic svg{fill:none!important;stroke:currentColor!important;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 html body:not(#pp):not(#pp) .client-portal-shell .client-service-card:not(.contracted) .c2-ic{background:#f4ede5!important;color:#8a6a3e!important}
+
+/* Móvil: "Más información" (servicio no contratado) centrado y por encima de la barra inferior */
+@media(max-width:760px){
+  html body:not(#pp):not(#pp) .client-unavailable-overlay{z-index:3300!important;align-items:center!important;justify-content:center!important;padding:16px!important}
+  html body:not(#pp):not(#pp) .client-unavailable-overlay .client-unavailable-card{width:100%!important;max-width:440px!important;min-height:0!important;height:auto!important;max-height:calc(100dvh - 32px)!important;overflow:auto!important;border-radius:26px!important;margin:auto!important;padding-bottom:22px!important;transform:none!important}
+}

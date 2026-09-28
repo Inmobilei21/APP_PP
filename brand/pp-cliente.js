@@ -107,4 +107,10 @@
   }
   new MutationObserver(() => { const overlay = document.querySelector(".client-fiscal-overlay"); if (overlay) officialIcons(overlay); })
     .observe(document.body, { childList: true, subtree: true });
+
+  // Al entrar (o volver a Inicio) la vista empieza arriba del todo.
+  const toTop = () => { window.scrollTo(0, 0); document.scrollingElement && (document.scrollingElement.scrollTop = 0); const m = document.querySelector("main"); if (m) m.scrollTop = 0; };
+  const realRender = renderClientPreview;
+  window.renderClientPreview = function () { const r = realRender.apply(this, arguments); toTop(); requestAnimationFrame(toTop); setTimeout(toTop, 400); return r; };
+  document.addEventListener("click", event => { if (event.target.closest("body > .c2-nav button:first-child")) setTimeout(toTop, 50); });
 })();
