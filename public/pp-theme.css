@@ -183,3 +183,8 @@ html body:not(#pp):not(#pp) .client-fiscal-year-folders .client-ui-icon svg,
 html body:not(#pp):not(#pp) .client-fiscal-quarter-folders .client-ui-icon svg{width:22px!important;height:22px!important}
 html body:not(#pp):not(#pp) .pp-file-icon{display:grid;place-items:center;width:40px;height:40px;flex:0 0 auto}
 html body:not(#pp):not(#pp) .pp-file-icon img{width:30px;height:auto;display:block}
+
+/* Inicio del área de cliente (móvil): mismo logo que Documentos e iconos de línea como las carpetas */
+html body:not(#pp):not(#pp) .client-portal-header img{content:url("/logo-pp-sand-v.png?v=pp14");filter:none!important;opacity:1!important}
+html body:not(#pp):not(#pp) .client-portal-shell .c2-ic svg{fill:none!important;stroke:currentColor!important;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+html body:not(#pp):not(#pp) .client-portal-shell .client-service-card:not(.contracted) .c2-ic{background:#f4ede5!important;color:#8a6a3e!important}
