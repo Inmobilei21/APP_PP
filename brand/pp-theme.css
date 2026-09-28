@@ -34,12 +34,12 @@ html body:not(#pp):not(#pp) #sidebar nav .nav-icon::after{background:transparent
 html body:not(#pp):not(#pp) #sidebar .sidebar-footer .profile > span:first-child{background:#07213d!important;color:#fff!important}
 
 /* Logos de la barra: P blanca para contrastar con la arena */
-html body:not(#pp):not(#pp) #sidebar .brand img{content:url("/logo-pp-sand.svg?v=pp5");filter:none!important}
+html body:not(#pp):not(#pp) #sidebar .brand img{content:url("/logo-pp-sand.svg?v=pp6");filter:none!important}
 @media(min-width:761px){
   html body:not(#pp):not(#pp) #sidebar:not(:hover) .brand img{display:none!important}
   html body:not(#pp):not(#pp) #sidebar:not(:hover) .brand::before{
     content:""!important;display:block!important;
-    background:url("/mark-pp-sand.svg?v=pp5") center/46px auto no-repeat!important;filter:none!important}
+    background:url("/mark-pp-sand.svg?v=pp6") center/46px auto no-repeat!important;filter:none!important}
   html body:not(#pp):not(#pp) #sidebar:not(:hover) .brand::after{display:none!important}
 }
 
@@ -70,3 +70,6 @@ html body:not(#pp):not(#pp) #sidebar nav .holded-mark::after{background:transpar
 html body:not(#pp):not(#pp) .e2-logo{height:clamp(110px,9vw,160px)}
 @media (min-width:761px) and (max-width:1500px){html body:not(#pp):not(#pp) .e2-logo{top:50px;height:70px}}
 @media (max-width:760px){html body:not(#pp):not(#pp) .m2-hero-logo{height:58px}}
+
+/* Logo del área de cliente (escritorio) algo más grande */
+html body:not(#pp):not(#pp) .cd2 .cd2-sello.cd2-sello-logo img{height:clamp(86px,7vw,124px)}
