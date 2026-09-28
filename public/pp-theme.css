@@ -131,3 +131,37 @@ html body:not(#pp):not(#pp) .client-fiscal-back,html body:not(#pp):not(#pp) .cli
   html body:not(#pp):not(#pp) .client-fiscal-header .pp-fiscal-sello{display:block!important;position:absolute;right:34px;bottom:50px;height:clamp(80px,6.5vw,112px);width:auto;z-index:1;content:url("/logo-pp-sand-v.png?v=pp10");filter:none!important}
   html body:not(#pp):not(#pp) .client-fiscal-header:has(.pp-fiscal-bar) .client-fiscal-profile{display:none!important}
 }
+
+/* =====================================================================
+   Área de cliente · móvil: barra inferior siempre visible y cabecera arena
+   igual que la de Inicio en Mis documentos y Mensajes (ver pp-cliente.js).
+   ===================================================================== */
+.pp-m-head{display:none}
+@media(max-width:760px){
+  html body:not(#pp):not(#pp).client-preview-mode > .c2-nav{z-index:3100!important}
+  html body:not(#pp):not(#pp) .client-fiscal-overlay,
+  html body:not(#pp):not(#pp) .client-documents-overlay{padding-bottom:calc(96px + env(safe-area-inset-bottom,0px))!important}
+  html body:not(#pp):not(#pp) .client-chat-overlay .client-chat-view{box-sizing:border-box!important;height:100dvh!important;padding-bottom:calc(88px + env(safe-area-inset-bottom,0px))!important;display:flex!important;flex-direction:column!important}
+  html body:not(#pp):not(#pp) .client-chat-view .client-chat-content{flex:1 1 auto!important;min-height:0!important;overflow:auto!important;display:flex;flex-direction:column}
+  html body:not(#pp):not(#pp) .client-chat-view .client-chat-messages{flex:1 1 auto;min-height:0;overflow:auto}
+  /* cabecera arena */
+  html body:not(#pp):not(#pp) .pp-m-head{display:block;flex:0 0 auto;padding:calc(env(safe-area-inset-top,0px) + 22px) 20px 26px;border-radius:0 0 28px 28px;
+    background:radial-gradient(90% 140% at 85% -10%,rgba(255,255,255,.35) 0%,rgba(255,255,255,0) 55%),linear-gradient(135deg,#e4cfae 0%,#d2b48c 55%,#c4a06e 100%);color:#07213d;box-shadow:0 10px 24px rgba(196,160,110,.25)}
+  html body:not(#pp):not(#pp) .pp-m-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px}
+  html body:not(#pp):not(#pp) .pp-m-top img{height:44px;width:auto;content:url("/logo-pp-sand-v.png?v=pp11")}
+  html body:not(#pp):not(#pp) .pp-m-top .profile{display:flex;align-items:center;gap:8px;padding:4px 14px 4px 4px;border-radius:24px;border:1px solid rgba(7,33,61,.16);background:rgba(255,255,255,.32);color:#07213d}
+  html body:not(#pp):not(#pp) .pp-m-top .profile>span:first-child{display:grid;place-items:center;width:32px;height:32px;border-radius:50%;background:#07213d;color:#fff;font-weight:700;font-size:12px}
+  html body:not(#pp):not(#pp) .pp-m-top .profile{padding:4px!important}
+  html body:not(#pp):not(#pp) .pp-m-top .profile .profile-copy{display:none!important}
+  html body:not(#pp):not(#pp) .pp-m-head .pp-m-eyebrow{display:block;margin:0;font-size:12px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:#6b4f2a}
+  html body:not(#pp):not(#pp) .pp-m-head .pp-m-title{margin:6px 0 0;font-size:30px;line-height:1.1;font-weight:800;color:#07213d;letter-spacing:-.02em}
+  html body:not(#pp):not(#pp):has(.client-chat-overlay) .pp-demo-ribbon{display:none!important}
+  /* se ocultan las cabeceras recortadas originales */
+  html body:not(#pp):not(#pp) .client-fiscal-overlay .client-fiscal-header,
+  html body:not(#pp):not(#pp) .client-chat-view>header{display:none!important}
+  html body:not(#pp):not(#pp) .client-fiscal-overlay .client-fiscal-back{display:none!important}
+  html body:not(#pp):not(#pp) .client-fiscal-overlay .client-fiscal-page{padding-top:14px!important}
+  html body:not(#pp):not(#pp) .client-chat-view .client-chat-intro{padding-top:20px}
+  /* etiqueta DEMO encima de la barra */
+  html body:not(#pp):not(#pp) .pp-demo-ribbon{z-index:3150!important;bottom:calc(env(safe-area-inset-bottom,0px) + 92px)!important}
+}

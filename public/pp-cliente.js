@@ -27,4 +27,57 @@
     header.appendChild(logo);
     return result;
   };
+
+  // ------------------------------------------------------------ móvil
+  const isMobile = () => matchMedia("(max-width:760px)").matches;
+
+  // Cabecera arena como la de Inicio: logo, avatar, "Área de cliente" y el título de la sección.
+  function mobileHeader(title) {
+    const head = document.createElement("div"); head.className = "pp-m-head";
+    const top = document.querySelector(".client-portal-header .c2-top");
+    head.innerHTML = `<div class="pp-m-top"></div><p class="pp-m-eyebrow">Área de cliente</p><h1 class="pp-m-title">${escapeHtml(title)}</h1>`;
+    if (top) {
+      const logo = top.querySelector("img")?.cloneNode(true); if (logo) head.firstChild.appendChild(logo);
+      const avatar = top.querySelector(".profile")?.cloneNode(true);
+      if (avatar) { avatar.addEventListener("click", () => openAccountPanel()); head.firstChild.appendChild(avatar); }
+    }
+    return head;
+  }
+
+  const fiscalWithMenu = window.openClientFiscalArea;
+  window.openClientFiscalArea = function () {
+    const result = fiscalWithMenu.apply(this, arguments);
+    const view = document.querySelector(".client-fiscal-overlay .client-fiscal-view");
+    if (view && !view.querySelector(".pp-m-head")) view.insertBefore(mobileHeader("Mis documentos"), view.firstChild);
+    setActive(2);
+    return result;
+  };
+
+  const realOpenChat = openClientChat;
+  window.openClientChat = function () {
+    const result = realOpenChat.apply(this, arguments);
+    const view = document.querySelector(".client-chat-overlay .client-chat-view");
+    if (view && !view.querySelector(".pp-m-head")) view.insertBefore(mobileHeader("Mensajes"), view.firstChild);
+    setActive(3);
+    return result;
+  };
+
+  // Barra inferior: siempre visible y cada botón lleva a su sección.
+  function setActive(index) {
+    document.querySelectorAll("body > .c2-nav button").forEach((button, i) => button.classList.toggle("active", i + 1 === index));
+  }
+  function closeSections() {
+    try { closeDocumentPreview(); } catch {}
+    closeClientChat(); closeClientFiscalArea(); closeClientDocuments();
+  }
+  document.addEventListener("click", event => {
+    const button = event.target.closest("body > .c2-nav button"); if (!button) return;
+    const index = [...button.parentElement.children].indexOf(button) + 1;
+    if (index === 4) return; // Perfil: se abre encima de lo que haya
+    closeSections();
+    if (index === 1) { setActive(1); event.stopImmediatePropagation(); event.preventDefault(); }
+  }, true);
+  const realCloseFiscal = closeClientFiscalArea, realCloseChat = closeClientChat;
+  window.closeClientFiscalArea = function () { const r = realCloseFiscal.apply(this, arguments); if (!document.querySelector(".client-chat-overlay")) setActive(1); return r; };
+  window.closeClientChat = function () { const r = realCloseChat.apply(this, arguments); if (!document.querySelector(".client-fiscal-overlay")) setActive(1); return r; };
 })();
