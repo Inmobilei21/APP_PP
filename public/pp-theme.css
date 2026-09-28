@@ -194,3 +194,21 @@ html body:not(#pp):not(#pp) .client-portal-shell .client-service-card:not(.contr
   html body:not(#pp):not(#pp) .client-unavailable-overlay{z-index:3300!important;align-items:center!important;justify-content:center!important;padding:16px!important}
   html body:not(#pp):not(#pp) .client-unavailable-overlay .client-unavailable-card{width:100%!important;max-width:440px!important;min-height:0!important;height:auto!important;max-height:calc(100dvh - 32px)!important;overflow:auto!important;border-radius:26px!important;margin:auto!important;padding-bottom:22px!important;transform:none!important}
 }
+
+/* Mi cuenta (móvil): ventana centrada, con margen respecto a la barra de estado y más compacta */
+@media(max-width:760px){
+  html body:not(#pp):not(#pp) .account-shell{place-items:center!important;padding:calc(env(safe-area-inset-top,0px) + 18px) 14px calc(env(safe-area-inset-bottom,0px) + 18px)!important}
+  html body:not(#pp):not(#pp) .account-card{width:100%!important;max-width:420px!important;max-height:min(80dvh,680px)!important;overflow:auto!important;border-radius:24px!important;overscroll-behavior:contain;padding:22px 18px 18px!important;margin:0!important}
+  html body:not(#pp):not(#pp) .account-card .eyebrow{font-size:11px;margin:0}
+  html body:not(#pp):not(#pp) .account-card h2{font-size:22px!important;margin:2px 44px 0 0!important}
+  html body:not(#pp):not(#pp) .account-card>p{margin:4px 0 14px;font-size:14px}
+  html body:not(#pp):not(#pp) .account-close{top:14px!important;right:14px!important;width:36px!important;height:36px!important}
+  html body:not(#pp):not(#pp) .account-card .view-mode-button{padding:10px 12px!important}
+  html body:not(#pp):not(#pp) .account-users{gap:8px!important;margin:14px 0!important}
+  html body:not(#pp):not(#pp) .account-users form{grid-template-columns:1fr auto!important;gap:8px 10px!important;padding:10px 12px!important}
+  html body:not(#pp):not(#pp) .account-users form>div{grid-column:1 / -1}
+  html body:not(#pp):not(#pp) .account-users form strong{font-size:15px}
+  html body:not(#pp):not(#pp) .account-users form small{font-size:12px}
+  html body:not(#pp):not(#pp) .account-users input{height:42px!important;min-width:0;font-size:16px}
+  html body:not(#pp):not(#pp) .account-users button{width:auto!important;height:42px!important;padding:0 16px!important}
+}
