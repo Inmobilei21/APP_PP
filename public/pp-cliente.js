@@ -94,4 +94,17 @@
   const realCloseFiscal = closeClientFiscalArea, realCloseChat = closeClientChat;
   window.closeClientFiscalArea = function () { const r = realCloseFiscal.apply(this, arguments); if (!document.querySelector(".client-chat-overlay")) setActive(1); return r; };
   window.closeClientChat = function () { const r = realCloseChat.apply(this, arguments); if (!document.querySelector(".client-fiscal-overlay")) setActive(1); return r; };
+
+  // Iconos oficiales (PDF, Word, Excel) en las filas de documentos del área de cliente.
+  function officialIcons(root) {
+    root.querySelectorAll(".client-fiscal-file-row:not([data-pp-icon])").forEach(row => {
+      const name = row.querySelector("strong")?.textContent || "", icon = row.querySelector(".client-ui-icon");
+      if (!icon) return;
+      const kind = /\.(docx?|dotx?)$/i.test(name) ? "word" : /\.(xlsx?|xlsm|csv)$/i.test(name) ? "excel" : /\.pdf$/i.test(name) ? "pdf" : "";
+      row.dataset.ppIcon = kind || "none";
+      if (kind) icon.outerHTML = `<span class="pp-file-icon"><img src="/icons/${kind}.png?v=1" alt="" draggable="false"></span>`;
+    });
+  }
+  new MutationObserver(() => { const overlay = document.querySelector(".client-fiscal-overlay"); if (overlay) officialIcons(overlay); })
+    .observe(document.body, { childList: true, subtree: true });
 })();
