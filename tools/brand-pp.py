@@ -102,9 +102,9 @@ TEXT = [
     ('alt="Molinero"', 'alt="ProPymes"'),
     ('<div class="client-desktop-message"><span>AM</span>', '<div class="client-desktop-message"><span>PP</span>'),
     ('<span class="cd2-av">AM</span>', '<span class="cd2-av">PP</span>'),
-    ("/splash-logo.png?v=3", "/splash-logo.png?v=pp1"),
-    ("/app-icon-192.png?v=5", "/app-icon-192.png?v=pp1"),
-    ("/app-icon.png\"", "/app-icon.png?v=pp1\""),
+    ("/splash-logo.png?v=3", "/splash-logo.png?v=pp7"),
+    ("/app-icon-192.png?v=5", "/app-icon-192.png?v=pp7"),
+    ("/app-icon.png\"", "/app-icon.png?v=pp7\""),
 ]
 
 def rebrand(path):
@@ -113,13 +113,13 @@ def rebrand(path):
         text = text.replace(a, b)
     if path.name == "index.html":
         # logos incrustados de Molinero → logos ProPymes
-        text = re.sub(r'(<div class="brand"><img src=")data:image/[a-z+]+;base64,[A-Za-z0-9+/=]+(")', r"\1/logo-pp-light.svg\2", text)
-        text = img_uri("mobile-logo").sub(r"\1/logo-pp.svg\2", text)
-        text = re.sub(r'(href="/(?:favicon|apple-touch-icon)\.png)\?v=\d+', r"\1?v=pp1", text)
-        text = text.replace('href="/manifest.webmanifest?v=5"', 'href="/manifest.webmanifest?v=pp1"')
-        text = re.sub(r'(<link rel="stylesheet" href="/styles\.css)(\?v=[^"]*)?"', r'\1\2"><link rel="stylesheet" href="/pp-theme.css?v=pp6"', text, count=1)
+        text = re.sub(r'(<div class="brand"><img src=")data:image/[a-z+]+;base64,[A-Za-z0-9+/=]+(")', r"\1/logo-pp-light.png?v=pp7\2", text)
+        text = img_uri("mobile-logo").sub(r"\1/logo-pp.png?v=pp7\2", text)
+        text = re.sub(r'(href="/(?:favicon|apple-touch-icon)\.png)\?v=\d+', r"\1?v=pp7", text)
+        text = text.replace('href="/manifest.webmanifest?v=5"', 'href="/manifest.webmanifest?v=pp7"')
+        text = re.sub(r'(<link rel="stylesheet" href="/styles\.css)(\?v=[^"]*)?"', r'\1\2"><link rel="stylesheet" href="/pp-theme.css?v=pp7"', text, count=1)
     if path.name == "app.js":
-        text = img_uri("chat-brand-logo").sub(r"\1/app-icon-192.png?v=pp1\2", text)
+        text = img_uri("chat-brand-logo").sub(r"\1/app-icon-192.png?v=pp7\2", text)
     path.write_text(recolor(text), encoding="utf8")
 
 pub = PP / "public"
@@ -128,7 +128,7 @@ for f in ["index.html", "app.js", "styles.css", "manifest.webmanifest"]:
 
 man = (pub / "manifest.webmanifest").read_text(encoding="utf8")
 man = man.replace('"APP AM"', '"APP PP"').replace("Aplicación de gestión del despacho Molinero", "Aplicación de gestión de ProPymes Asesores")
-man = re.sub(r"\?v=\d+", "?v=pp1", man)
+man = re.sub(r"\?v=\d+", "?v=pp7", man)
 (pub / "manifest.webmanifest").write_text(man, encoding="utf8")
 
 pkg = (PP / "package.json").read_text(encoding="utf8")
@@ -137,21 +137,61 @@ readme = (PP / "README.md").read_text(encoding="utf8")
 (PP / "README.md").write_text(readme.replace("# APP AM", "# APP PP · ProPymes Asesores\n\nCopia de APP.AM con la imagen corporativa de ProPymes. Para actualizarla con los últimos cambios de APP.AM: `python3 tools/brand-pp.py ../APP.AM .`", 1), encoding="utf8")
 
 # ---------------------------------------------------------------- 4. logos e iconos
-import cairosvg
+# Logos oficiales (PNG transparentes) en brand/oficial; de ellos salen todas las variantes.
 from PIL import Image
 
-for svg in ["logo-pp.svg", "logo-pp-light.svg", "logo-pp-sand.svg", "mark-pp-light.svg", "mark-pp-sand.svg"]:
-    shutil.copy2(BRAND / svg, pub / svg)
+OFI = BRAND / "oficial"
+NAVY, TAN, WHITE = (7, 33, 61), (210, 180, 140), (255, 255, 255)
 
-def svg_png(svg_path, width):
-    return Image.open(io.BytesIO(cairosvg.svg2png(url=str(svg_path), output_width=width))).convert("RGBA")
+def load(name):
+    im = Image.open(OFI / name).convert("RGBA")
+    return im.crop(im.getbbox())
 
-# splash / cabeceras oscuras: logo claro
-svg_png(BRAND / "logo-pp-light.svg", 1116).save(pub / "splash-logo.png", optimize=True)
+def recolor(im, mapping):
+    """Cambia cada color de marca (el más cercano) por otro, conservando la transparencia."""
+    out = im.copy(); px = out.load()
+    refs = {"navy": NAVY, "tan": TAN, "white": WHITE}
+    for y in range(out.height):
+        for x in range(out.width):
+            r, g, b, a = px[x, y]
+            if not a:
+                continue
+            key = min(refs, key=lambda k: sum((c - d) ** 2 for c, d in zip((r, g, b), refs[k])))
+            if key in mapping:
+                px[x, y] = (*mapping[key], a)
+    return out
+
+def first_band(im, axis):
+    """Recorta la primera franja con contenido (el isotipo) en horizontal (axis=0) o vertical (axis=1)."""
+    alpha = im.getchannel("A"); w, h = im.size
+    n = w if axis == 0 else h
+    filled = [any(alpha.getpixel((i, j) if axis == 0 else (j, i)) > 40 for j in range(0, h if axis == 0 else w, 2)) for i in range(n)]
+    start = filled.index(True); end = start
+    while end < n and filled[end]:
+        end += 1
+    part = im.crop((start, 0, end, h) if axis == 0 else (0, start, w, end))
+    return part.crop(part.getbbox())
+
+def fit(im, width):
+    return im.resize((width, round(im.height * width / im.width)), Image.LANCZOS)
+
+vertical_light = load("vertical-arena-blanco.png")                     # fondos marino
+vertical_dark = recolor(vertical_light, {"white": NAVY})              # fondos claros
+horizontal_sand = recolor(load("horizontal-arena-marino.png"), {"tan": WHITE})  # barra arena: P dorada en blanco
+mark_light = first_band(vertical_light, 1)
+mark_sand = first_band(horizontal_sand, 0)
+
+fit(vertical_light, 1200).save(pub / "logo-pp-light.png", optimize=True)
+fit(vertical_dark, 1200).save(pub / "logo-pp.png", optimize=True)
+fit(horizontal_sand, 1200).save(pub / "logo-pp-sand.png", optimize=True)
+fit(mark_light, 400).save(pub / "mark-pp-light.png", optimize=True)
+fit(mark_sand, 400).save(pub / "mark-pp-sand.png", optimize=True)
+fit(vertical_light, 1116).save(pub / "splash-logo.png", optimize=True)   # splash / cabeceras oscuras
 
 def icon(size, pad):
-    bg = Image.new("RGBA", (size, size), (7, 33, 61, 255))
-    mark = svg_png(BRAND / "mark-pp-light.svg", int(size * (1 - 2 * pad)))
+    bg = Image.new("RGBA", (size, size), (*NAVY, 255))
+    box = int(size * (1 - 2 * pad))
+    mark = mark_light.copy(); mark.thumbnail((box, box), Image.LANCZOS)
     bg.alpha_composite(mark, ((size - mark.width) // 2, (size - mark.height) // 2))
     return bg
 

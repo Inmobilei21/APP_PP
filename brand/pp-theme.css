@@ -5,7 +5,7 @@
 /* Barra lateral cerrada: isotipo PP en lugar del de Molinero */
 @media(min-width:761px){
   body:not(.client-preview-mode) .sidebar:not(:hover) .brand::before{
-    background-image:url("/mark-pp-light.svg?v=pp1")!important;
+    background-image:url("/mark-pp-light.png?v=pp7")!important;
     background-size:44px auto!important;
     background-position:center!important;
     filter:none!important;
@@ -34,12 +34,12 @@ html body:not(#pp):not(#pp) #sidebar nav .nav-icon::after{background:transparent
 html body:not(#pp):not(#pp) #sidebar .sidebar-footer .profile > span:first-child{background:#07213d!important;color:#fff!important}
 
 /* Logos de la barra: P blanca para contrastar con la arena */
-html body:not(#pp):not(#pp) #sidebar .brand img{content:url("/logo-pp-sand.svg?v=pp6");filter:none!important}
+html body:not(#pp):not(#pp) #sidebar .brand img{content:url("/logo-pp-sand.png?v=pp7");filter:none!important}
 @media(min-width:761px){
   html body:not(#pp):not(#pp) #sidebar:not(:hover) .brand img{display:none!important}
   html body:not(#pp):not(#pp) #sidebar:not(:hover) .brand::before{
     content:""!important;display:block!important;
-    background:url("/mark-pp-sand.svg?v=pp6") center/46px auto no-repeat!important;filter:none!important}
+    background:url("/mark-pp-sand.png?v=pp7") center/46px auto no-repeat!important;filter:none!important}
   html body:not(#pp):not(#pp) #sidebar:not(:hover) .brand::after{display:none!important}
 }
 

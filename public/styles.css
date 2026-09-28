@@ -770,7 +770,7 @@ html.auth-pending body{visibility:hidden}
   width:clamp(220px,27vw,430px);
   aspect-ratio:1;
   transform:translateY(-50%) rotate(-8deg);
-  background:url("/app-icon.png?v=pp1") center/contain no-repeat;
+  background:url("/app-icon.png?v=pp7") center/contain no-repeat;
   opacity:.055;
   filter:grayscale(1);
   z-index:-1;
@@ -3516,8 +3516,8 @@ html.splash-activo, html.splash-activo body { overflow: hidden; }
   background: linear-gradient(110deg, transparent 35%, rgba(213,184,145,.9) 50%, transparent 65%) no-repeat;
   background-size: 250% 100%;
   background-position: 150% 0;
-  -webkit-mask: var(--splash-logo-url, url("/splash-logo.png?v=pp1")) center / 100% 100% no-repeat;
-          mask: var(--splash-logo-url, url("/splash-logo.png?v=pp1")) center / 100% 100% no-repeat;
+  -webkit-mask: var(--splash-logo-url, url("/splash-logo.png?v=pp7")) center / 100% 100% no-repeat;
+          mask: var(--splash-logo-url, url("/splash-logo.png?v=pp7")) center / 100% 100% no-repeat;
   animation: splash-brillo 1.8s ease-in-out 2.2s forwards;
 }
 .splash-barra {
