@@ -1,0 +1,13 @@
+/* ProPymes · ajustes finales de marca (se carga después de styles.css) */
+:root{--pp-navy:#07213d;--pp-tan:#d2b48c;--pp-cream:#f4ede5}
+/* El logo ya viene en blanco y arena: no forzar a blanco puro */
+.brand img{filter:none!important}
+/* Barra lateral cerrada: isotipo PP en lugar del de Molinero */
+@media(min-width:761px){
+  body:not(.client-preview-mode) .sidebar:not(:hover) .brand::before{
+    background-image:url("/mark-pp-light.svg?v=pp1")!important;
+    background-size:44px auto!important;
+    background-position:center!important;
+    filter:none!important;
+  }
+}
