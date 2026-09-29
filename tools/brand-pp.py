@@ -123,6 +123,14 @@ def rebrand(path):
     path.write_text(recolor(text), encoding="utf8")
 
 pub = PP / "public"
+# El selector de despacho de APP.AM (despacho-cliente.*) no se usa en PP: PP tiene el suyo (pp-gestion.js)
+for extra in ["despacho-cliente.js", "despacho-cliente.css"]:
+    (pub / extra).unlink(missing_ok=True)
+shutil.rmtree(pub / "propymes", ignore_errors=True)
+_idx = (pub / "index.html").read_text(encoding="utf8")
+_idx = re.sub(r'<link rel="stylesheet" href="/despacho-cliente\.css[^"]*">', "", _idx)
+_idx = re.sub(r'<script src="/despacho-cliente\.js[^"]*"></script>', "", _idx)
+(pub / "index.html").write_text(_idx, encoding="utf8")
 for f in ["index.html", "app.js", "styles.css", "manifest.webmanifest"]:
     rebrand(pub / f)
 
