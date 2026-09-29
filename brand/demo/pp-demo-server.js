@@ -35,6 +35,8 @@ function readBody(req) {
 
 // Devuelve true si ha respondido a la petición.
 module.exports = function ppDemo(req, res, requestPath) {
+  // Si el service worker aún no está activo, el PDF compartido llega aquí: se vuelve a la app con aviso.
+  if (requestPath === "/compartir" && req.method === "POST") { req.resume(); res.writeHead(303, { Location: "/#compartido=error" }); res.end(); return true; }
   if (!requestPath.startsWith("/api/")) return false;
 
   if (requestPath === "/api/pp-demo/login" && req.method === "POST") {

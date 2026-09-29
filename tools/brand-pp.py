@@ -212,11 +212,19 @@ DEMO = BRAND / "demo"
 shutil.copy2(DEMO / "pp-demo-server.js", PP / "pp-demo-server.js")
 shutil.copy2(DEMO / "pp-demo.js", pub / "pp-demo.js")
 shutil.copy2(BRAND / "pp-cliente.js", pub / "pp-cliente.js")
+shutil.copy2(BRAND / "sw.js", pub / "sw.js")
+
+# La app instalada aparece en "Compartir" del móvil para recibir PDF (Android; iPhone no lo permite a las web-apps)
+import json
+manifest = json.loads((pub / "manifest.webmanifest").read_text(encoding="utf8"))
+manifest["share_target"] = {"action": "/compartir", "method": "POST", "enctype": "multipart/form-data",
+                            "params": {"title": "title", "text": "text", "files": [{"name": "documentos", "accept": ["application/pdf", ".pdf"]}]}}
+(pub / "manifest.webmanifest").write_text(json.dumps(manifest, ensure_ascii=False, indent=2), encoding="utf8")
 shutil.copytree(DEMO / "pdf", pub / "demo", dirs_exist_ok=True)
 shutil.copy2(DEMO / "documentos.json", pub / "demo" / "documentos.json")
 
 html = (pub / "index.html").read_text(encoding="utf8")
-html, n = re.subn(r'(<script src="/app\.js[^"]*"></script>)', r'\1<script src="/pp-cliente.js?v=pp15"></script><script src="/pp-demo.js?v=pp15"></script>', html, count=1)
+html, n = re.subn(r'(<script src="/app\.js[^"]*"></script>)', r'\1<script src="/pp-cliente.js?v=pp19"></script><script src="/pp-demo.js?v=pp15"></script>', html, count=1)
 assert n == 1, "No se encontró app.js en index.html"
 (pub / "index.html").write_text(html, encoding="utf8")
 
