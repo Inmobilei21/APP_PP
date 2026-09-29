@@ -265,3 +265,11 @@ html body.pp-molinero:not(#pp):not(#pp) .cd2-sello img,html body.pp-molinero:not
 html body.pp-molinero:not(#pp):not(#pp) .pp-m-top img,html body.pp-molinero:not(#pp):not(#pp) .client-portal-header img{height:34px!important}
 html body.pp-molinero:not(#pp):not(#pp) .client-fiscal-header::before,html body.pp-molinero:not(#pp):not(#pp) .client-fiscal-header::after,
 html body.pp-molinero:not(#pp):not(#pp) .client-fiscal-header *::before,html body.pp-molinero:not(#pp):not(#pp) .client-fiscal-header *::after{color:rgba(255,255,255,.7)!important}
+
+/* Con una ventana abierta (ficha de cliente, Mi cuenta…) la pestaña activa de la barra lateral no se
+   prolonga hacia el lienzo: queda como un botón redondeado dentro de la barra, sin "trozo" suelto. */
+@media(min-width:761px){
+  html body:has(.modal-shell.open,.account-shell):not(.client-preview-mode):not(#x) #sidebar:not(:hover) nav button.active{width:auto!important;margin-left:0!important;margin-right:0!important;padding-right:0!important;border-radius:16px!important;align-self:center!important}
+  html body:has(.modal-shell.open,.account-shell):not(.client-preview-mode):not(#x) #sidebar:not(:hover) nav button.active::before,
+  html body:has(.modal-shell.open,.account-shell):not(.client-preview-mode):not(#x) #sidebar:not(:hover) nav button.active::after{display:none!important}
+}
