@@ -240,4 +240,47 @@
   .pp-toast{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 150px);transform:translate(-50%,20px);opacity:0;z-index:3500;background:#07213d;color:#fff;padding:12px 18px;border-radius:14px;font:600 14px Inter,ui-sans-serif,sans-serif;box-shadow:0 12px 30px rgba(7,33,61,.3);transition:.25s}
   .pp-toast.on{opacity:1;transform:translate(-50%,0)}`;
   document.head.appendChild(css);
+
+  // ------------------------------------------------------------ marca según el despacho del cliente
+  // Una sola base de datos para los dos despachos: cada cliente ve la imagen del despacho asignado en
+  // su ficha (campo "Despacho"). ProPymes → arena (por defecto); Asesoría Molinero → marino y logo Molinero.
+  const MOLINERO = "Asesoría Molinero";
+  const CLIENT_AREAS = ".cd2, .client-portal-shell, .client-fiscal-overlay, .client-chat-overlay, .client-documents-overlay, .client-unavailable-overlay, .pp-m-head";
+  let brandToken = 0;
+  async function officeOf(name) {
+    if (signedInUser?.role === "demo") return "ProPymes Asesores";
+    try {
+      const client = (await getAllClientMetadata()).find(c => c.id === name || clientIdentity(c) === name);
+      return client?.office || "ProPymes Asesores";
+    } catch { return "ProPymes Asesores"; }
+  }
+  function molineroTexts() {
+    if (!document.body.classList.contains("pp-molinero")) return;
+    document.querySelectorAll(CLIENT_AREAS).forEach(area => {
+      const walker = document.createTreeWalker(area, NodeFilter.SHOW_TEXT);
+      for (let node; (node = walker.nextNode());) {
+        if (!/ProPymes|PROPYMES/.test(node.nodeValue)) continue;
+        node.nodeValue = node.nodeValue.replace(/ProPymes Asesores|PROPYMES ASESORES/g, m => m === m.toUpperCase() ? "ASESORÍA MOLINERO" : MOLINERO).replace(/ProPymes/g, "Molinero");
+      }
+      area.querySelectorAll(".cd2-av, .client-desktop-message>span").forEach(av => { if (av.textContent.trim() === "PP") av.textContent = "AM"; });
+      area.querySelectorAll('img[alt*="ProPymes"]').forEach(img => img.alt = MOLINERO);
+    });
+  }
+  async function applyClientBrand() {
+    const token = ++brandToken, office = await officeOf(clientPreviewName);
+    if (token !== brandToken) return;
+    const molinero = office === MOLINERO && document.body.classList.contains("client-preview-mode");
+    if (molinero !== document.body.classList.contains("pp-molinero")) document.body.classList.toggle("pp-molinero", molinero);
+    molineroTexts();
+  }
+  const renderForBrand = window.renderClientPreview;
+  window.renderClientPreview = function () { const r = renderForBrand.apply(this, arguments); applyClientBrand(); return r; };
+  const closeForBrand = window.closeClientPreview;
+  window.closeClientPreview = function () { if (document.body.classList.contains("pp-molinero")) document.body.classList.remove("pp-molinero"); return closeForBrand.apply(this, arguments); };
+  let textsQueued = false;
+  new MutationObserver(() => {
+    if (!document.body.classList.contains("client-preview-mode")) { if (document.body.classList.contains("pp-molinero")) document.body.classList.remove("pp-molinero"); return; }
+    if (textsQueued || !document.body.classList.contains("pp-molinero")) return;
+    textsQueued = true; requestAnimationFrame(() => { textsQueued = false; molineroTexts(); });
+  }).observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ["class"] });
 })();

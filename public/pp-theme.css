@@ -212,3 +212,56 @@ html body:not(#pp):not(#pp) .client-portal-shell .client-service-card:not(.contr
   html body:not(#pp):not(#pp) .account-users input{height:42px!important;min-width:0;font-size:16px}
   html body:not(#pp):not(#pp) .account-users button{width:auto!important;height:42px!important;padding:0 16px!important}
 }
+
+/* =====================================================================
+   Clientes de Asesoría Molinero (ficha › Despacho): el área de cliente
+   vuelve al marino y al logo de Molinero (clase .pp-molinero, pp-cliente.js).
+   ===================================================================== */
+html body.pp-molinero:not(#pp):not(#pp) .cd2-cab,
+html body.pp-molinero:not(#pp):not(#pp) .client-portal-header,
+html body.pp-molinero:not(#pp):not(#pp) .client-fiscal-header,
+html body.pp-molinero:not(#pp):not(#pp) .client-chat-view>header,
+html body.pp-molinero:not(#pp):not(#pp) .client-documents-view>header,
+html body.pp-molinero:not(#pp):not(#pp) .pp-m-head{
+  background:radial-gradient(90% 140% at 85% -10%,rgba(29,72,118,.9) 0%,rgba(29,72,118,0) 55%),linear-gradient(135deg,#07213d 0%,#0b2a4c 100%)!important;color:#fff!important;box-shadow:0 10px 26px rgba(7,33,61,.25)!important}
+html body.pp-molinero:not(#pp):not(#pp) .cd2-cab *,
+html body.pp-molinero:not(#pp):not(#pp) .client-portal-header *,
+html body.pp-molinero:not(#pp):not(#pp) .client-fiscal-header *,
+html body.pp-molinero:not(#pp):not(#pp) .client-chat-view>header *,
+html body.pp-molinero:not(#pp):not(#pp) .client-documents-view>header *,
+html body.pp-molinero:not(#pp):not(#pp) .pp-m-head *{color:#fff!important}
+html body.pp-molinero:not(#pp):not(#pp) .cd2-saludo small,html body.pp-molinero:not(#pp):not(#pp) .pp-m-head .pp-m-eyebrow,
+html body.pp-molinero:not(#pp):not(#pp) .client-fiscal-header small{color:rgba(255,255,255,.7)!important}
+html body.pp-molinero:not(#pp):not(#pp) .cd2-saludo p,html body.pp-molinero:not(#pp):not(#pp) .client-portal-header p{color:rgba(255,255,255,.8)!important}
+html body.pp-molinero:not(#pp):not(#pp) .cd2-cab::before,html body.pp-molinero:not(#pp):not(#pp) .client-portal-header::before,
+html body.pp-molinero:not(#pp):not(#pp) .client-fiscal-header::before{background:radial-gradient(circle,rgba(29,72,118,.45),transparent 65%)!important}
+html body.pp-molinero:not(#pp):not(#pp) .cd2-lema,html body.pp-molinero:not(#pp):not(#pp) .client-fiscal-brand>span{border-color:rgba(255,255,255,.3)!important}
+/* menú, perfil y botones */
+html body.pp-molinero:not(#pp):not(#pp) .cd2-menu,
+html body.pp-molinero:not(#pp):not(#pp) .cd2-perfil,
+html body.pp-molinero:not(#pp):not(#pp) .cd2-salir,
+html body.pp-molinero:not(#pp):not(#pp) .client-portal-header .profile,
+html body.pp-molinero:not(#pp):not(#pp) .pp-m-top .profile,
+html body.pp-molinero:not(#pp):not(#pp) .client-fiscal-header button,
+html body.pp-molinero:not(#pp):not(#pp) .client-fiscal-back,
+html body.pp-molinero:not(#pp):not(#pp) .client-chat-view>header button,
+html body.pp-molinero:not(#pp):not(#pp) .client-documents-view>header button{background:rgba(255,255,255,.1)!important;border-color:rgba(255,255,255,.2)!important}
+html body.pp-molinero:not(#pp):not(#pp) .client-fiscal-back,html body.pp-molinero:not(#pp):not(#pp) .client-fiscal-back *{color:#fff!important}
+html body.pp-molinero:not(#pp):not(#pp) .cd2-menu button.on{background:#fff!important}
+html body.pp-molinero:not(#pp):not(#pp) .cd2-menu button.on,html body.pp-molinero:not(#pp):not(#pp) .cd2-menu button.on *{color:#07213d!important}
+html body.pp-molinero:not(#pp):not(#pp) .cd2-perfil i,
+html body.pp-molinero:not(#pp):not(#pp) .client-portal-header .profile>span:first-child,
+html body.pp-molinero:not(#pp):not(#pp) .pp-m-top .profile>span:first-child,
+html body.pp-molinero:not(#pp):not(#pp) .client-fiscal-header .profile>span:first-child{background:#fff!important;color:#07213d!important}
+/* logos Molinero */
+html body.pp-molinero:not(#pp):not(#pp) .cd2-barra>img,
+html body.pp-molinero:not(#pp):not(#pp) .cd2-sello img,
+html body.pp-molinero:not(#pp):not(#pp) .client-portal-header img,
+html body.pp-molinero:not(#pp):not(#pp) .client-fiscal-brand img,
+html body.pp-molinero:not(#pp):not(#pp) .pp-m-top img,
+html body.pp-molinero:not(#pp):not(#pp) .client-fiscal-header .pp-fiscal-sello{content:url("/molinero/logo-claro.png?v=1")!important;filter:none!important}
+html body.pp-molinero:not(#pp):not(#pp) .cd2-barra>img,html body.pp-molinero:not(#pp):not(#pp) .client-fiscal-brand img{height:44px!important}
+html body.pp-molinero:not(#pp):not(#pp) .cd2-sello img,html body.pp-molinero:not(#pp):not(#pp) .client-fiscal-header .pp-fiscal-sello{height:clamp(56px,4.6vw,80px)!important}
+html body.pp-molinero:not(#pp):not(#pp) .pp-m-top img,html body.pp-molinero:not(#pp):not(#pp) .client-portal-header img{height:34px!important}
+html body.pp-molinero:not(#pp):not(#pp) .client-fiscal-header::before,html body.pp-molinero:not(#pp):not(#pp) .client-fiscal-header::after,
+html body.pp-molinero:not(#pp):not(#pp) .client-fiscal-header *::before,html body.pp-molinero:not(#pp):not(#pp) .client-fiscal-header *::after{color:rgba(255,255,255,.7)!important}

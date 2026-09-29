@@ -117,7 +117,7 @@ def rebrand(path):
         text = img_uri("mobile-logo").sub(r"\1/logo-pp.png?v=pp7\2", text)
         text = re.sub(r'(href="/(?:favicon|apple-touch-icon)\.png)\?v=\d+', r"\1?v=pp7", text)
         text = text.replace('href="/manifest.webmanifest?v=5"', 'href="/manifest.webmanifest?v=pp7"')
-        text = re.sub(r'(<link rel="stylesheet" href="/styles\.css)(\?v=[^"]*)?"', r'\1\2"><link rel="stylesheet" href="/pp-theme.css?v=pp16"', text, count=1)
+        text = re.sub(r'(<link rel="stylesheet" href="/styles\.css)(\?v=[^"]*)?"', r'\1\2"><link rel="stylesheet" href="/pp-theme.css?v=pp22"', text, count=1)
     if path.name == "app.js":
         text = img_uri("chat-brand-logo").sub(r"\1/app-icon-192.png?v=pp7\2", text)
     path.write_text(recolor(text), encoding="utf8")
@@ -213,6 +213,9 @@ shutil.copy2(DEMO / "pp-demo-server.js", PP / "pp-demo-server.js")
 shutil.copy2(DEMO / "pp-demo.js", pub / "pp-demo.js")
 shutil.copy2(BRAND / "pp-cliente.js", pub / "pp-cliente.js")
 shutil.copy2(BRAND / "pp-gestion.js", pub / "pp-gestion.js")
+# Logo de Molinero para los clientes de Asesoría Molinero (se toma de APP.AM tal cual)
+(pub / "molinero").mkdir(exist_ok=True)
+shutil.copy2(AM / "public" / "splash-logo.png", pub / "molinero" / "logo-claro.png")
 shutil.copy2(BRAND / "sw.js", pub / "sw.js")
 
 # La app instalada aparece en "Compartir" del móvil para recibir PDF (Android; iPhone no lo permite a las web-apps)
@@ -225,7 +228,7 @@ shutil.copytree(DEMO / "pdf", pub / "demo", dirs_exist_ok=True)
 shutil.copy2(DEMO / "documentos.json", pub / "demo" / "documentos.json")
 
 html = (pub / "index.html").read_text(encoding="utf8")
-html, n = re.subn(r'(<script src="/app\.js[^"]*"></script>)', r'\1<script src="/pp-cliente.js?v=pp19"></script><script src="/pp-gestion.js?v=pp20"></script><script src="/pp-demo.js?v=pp15"></script>', html, count=1)
+html, n = re.subn(r'(<script src="/app\.js[^"]*"></script>)', r'\1<script src="/pp-cliente.js?v=pp22"></script><script src="/pp-gestion.js?v=pp20"></script><script src="/pp-demo.js?v=pp15"></script>', html, count=1)
 assert n == 1, "No se encontró app.js en index.html"
 (pub / "index.html").write_text(html, encoding="utf8")
 
