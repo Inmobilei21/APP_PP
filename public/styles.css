@@ -4851,3 +4851,353 @@ html body.home-cuatro-columnas .home-activity-card.home-client-messages-card .ho
   html body:not(.client-preview-mode) .sidebar nav button.active svg{color:#0a243f!important;stroke:#0a243f!important}
   html body:not(.client-preview-mode) .sidebar nav button.active{margin-top:14px!important;margin-bottom:14px!important}
 }
+
+
+/* ===== Ficha del cliente móvil: vista de datos compacta ===== */
+@media (max-width:760px){
+  /* Alcance deliberadamente limitado al modal de la ficha del cliente. */
+  #clientModal .client-modal{
+    width:calc(100vw - 16px);
+    max-height:calc(100dvh - 16px);
+    padding:18px 16px 22px;
+    border-radius:24px;
+  }
+  #clientModal .modal-heading{
+    position:relative;
+    display:grid;
+    grid-template-columns:minmax(0,1fr) auto;
+    align-items:start!important;
+    gap:12px!important;
+    padding:2px 0 16px;
+    margin-bottom:14px;
+  }
+  #clientModal .modal-heading>div:first-child{min-width:0;padding-right:4px}
+  #clientModal .modal-heading .eyebrow{font-size:11px;letter-spacing:.16em}
+  #clientModal .modal-heading h2{
+    margin-top:5px;
+    font-size:clamp(24px,7vw,31px);
+    line-height:1.08;
+    letter-spacing:-.035em;
+    overflow-wrap:anywhere;
+  }
+  #clientModal .client-modal-heading-actions{
+    position:static;
+    width:auto;
+    margin:0;
+    display:flex;
+    flex-wrap:nowrap;
+    align-items:center;
+    justify-content:flex-end;
+    gap:7px;
+  }
+  #clientModal #clientModalDismiss{display:none!important}
+  #clientModal .client-modal-heading-actions .client-view-edit:not([hidden]),
+  #clientModal .client-modal-heading-actions #saveClientButton:not([hidden]){
+    width:auto;
+    min-width:0;
+    min-height:40px;
+    padding:8px 13px;
+    border-radius:12px;
+  }
+  #clientModal .client-modal-heading-actions .modal-close{
+    order:3;
+    width:40px;
+    height:40px;
+    flex:0 0 40px;
+    margin:0;
+    border-radius:12px;
+    font-size:24px;
+  }
+
+  /* En consulta, los controles se leen como datos y no como un formulario largo. */
+  #clientModal #newClientForm.client-view-mode .client-identity-grid{
+    grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+    gap:10px;
+    padding:12px;
+    margin:0 0 14px;
+    border:1px solid #ece9e5;
+    border-radius:18px;
+    background:#fbfaf9;
+  }
+  #clientModal #newClientForm.client-view-mode .client-identity-grid::before{
+    content:"Datos principales";
+    grid-column:1/-1;
+    color:#0f345b;
+    font-size:11px;
+    font-weight:850;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+  }
+  #clientModal #newClientForm.client-view-mode .client-identity-grid>label{
+    min-width:0;
+    margin:0;
+    padding:11px 12px;
+    border:1px solid #edebe8;
+    border-radius:13px;
+    background:#fff;
+    color:#788399;
+    font-size:10px;
+    font-weight:800;
+    line-height:1.2;
+  }
+  #clientModal #newClientForm.client-view-mode .client-identity-grid>.client-name-field,
+  #clientModal #newClientForm.client-view-mode .client-identity-grid>.client-active-field{
+    grid-column:1/-1;
+  }
+  #clientModal #newClientForm.client-view-mode .client-identity-grid input:not([type=checkbox]),
+  #clientModal #newClientForm.client-view-mode .client-identity-grid select{
+    width:100%;
+    height:auto!important;
+    min-height:24px!important;
+    margin:5px 0 0!important;
+    padding:0!important;
+    border:0!important;
+    border-radius:0!important;
+    background:transparent!important;
+    box-shadow:none!important;
+    color:#112234!important;
+    -webkit-text-fill-color:#112234!important;
+    font-size:15px!important;
+    font-weight:780!important;
+    line-height:1.35!important;
+    appearance:none;
+  }
+  #clientModal #newClientForm.client-view-mode .client-identity-grid small{
+    margin:3px 0 0!important;
+    font-size:9px!important;
+    line-height:1.25;
+  }
+  #clientModal #newClientForm.client-view-mode .client-active-control{
+    width:max-content;
+    max-width:100%;
+    height:auto;
+    min-height:28px;
+    margin-top:5px;
+    padding:0;
+    border:0;
+    background:transparent;
+  }
+  #clientModal #newClientForm.client-view-mode .client-active-control small{
+    color:#34465a!important;
+    font-size:12px!important;
+    font-weight:750;
+  }
+  #clientModal #newClientForm.client-view-mode .client-active-control i{transform:scale(.88);transform-origin:left center}
+  #clientModal #newClientForm.client-view-mode .internal-client-data{margin-top:0}
+
+  /* En edición se conserva el formulario, pero con una cabecera limpia. */
+  #clientModal #newClientForm:not(.client-view-mode) .client-identity-grid{margin-top:0}
+}
+@media (max-width:390px){
+  #clientModal .modal-heading{grid-template-columns:1fr}
+  #clientModal .client-modal-heading-actions{position:absolute;right:0;top:0}
+  #clientModal .modal-heading>div:first-child{padding-right:96px}
+  #clientModal #newClientForm.client-view-mode .client-identity-grid{grid-template-columns:1fr}
+  #clientModal #newClientForm.client-view-mode .client-identity-grid>label{grid-column:1!important}
+}
+
+
+/* ===== Ficha móvil: separación de la zona segura superior ===== */
+@media (max-width:760px){
+  #clientModal .client-modal{
+    padding-top:max(40px,calc(env(safe-area-inset-top) + 14px));
+  }
+  #clientModal .modal-heading{
+    padding-top:4px;
+    padding-bottom:20px;
+    margin-bottom:16px;
+  }
+  #clientModal .modal-heading .eyebrow{margin-bottom:8px}
+  #clientModal .modal-heading h2{margin-top:0}
+}
+
+
+/* ===== Ficha móvil: tarjeta flotante con cuatro esquinas visibles ===== */
+@media (max-width:760px){
+  #clientModal{
+    box-sizing:border-box;
+    padding:
+      calc(env(safe-area-inset-top) + 12px)
+      10px
+      calc(env(safe-area-inset-bottom) + 12px);
+  }
+  #clientModal .client-modal{
+    box-sizing:border-box;
+    width:100%;
+    height:100%;
+    max-height:100%;
+    padding-top:22px;
+    border-radius:28px;
+    overflow-x:hidden;
+    overflow-y:auto;
+  }
+}
+
+
+/* ===== Barra inferior móvil: sección activa destacada ===== */
+@media (max-width:760px){
+  html body .m2-barra .m2-tab{
+    justify-self:center;
+    width:calc(100% - 8px);
+    height:54px;
+    justify-content:center;
+    border-radius:18px!important;
+    transition:color .2s ease,background .2s ease,transform .2s ease,box-shadow .2s ease;
+  }
+  html body .m2-barra .m2-tab.active{
+    color:#0a243f!important;
+    background:#f9f4ef!important;
+    border-radius:18px!important;
+    box-shadow:inset 0 0 0 1px rgba(17,59,103,.10);
+    transform:translateY(-2px);
+  }
+  html body .m2-barra .m2-tab.active svg{stroke-width:2.25}
+  html body .m2-barra .m2-tab.active small{font-weight:750!important}
+
+  html body.chat-open .m2-barra .m2-tab.active:not(.m2-chat){
+    color:#6B7488!important;
+    background:transparent!important;
+    box-shadow:none;
+    transform:none;
+  }
+  html body.chat-open .m2-barra .m2-chat,
+  html body:has(.m2-hoja[data-hoja="menu"].on) .m2-barra .m2-menu{
+    color:#0a243f!important;
+    background:#f9f4ef!important;
+    border-radius:18px!important;
+    box-shadow:inset 0 0 0 1px rgba(17,59,103,.10);
+    transform:translateY(-2px);
+  }
+  html body:has(.m2-hoja[data-hoja="menu"].on) .m2-barra .m2-tab.active:not(.m2-menu){
+    color:#6B7488!important;
+    background:transparent!important;
+    box-shadow:none;
+    transform:none;
+  }
+}
+
+
+/* ===== Menú móvil: fondo fijo y panel arrastrable ===== */
+@media (max-width:760px){
+  html:has(body.m2-panel-open){overflow:hidden!important;overscroll-behavior:none}
+  body.m2-panel-open{
+    position:fixed!important;
+    left:0;
+    right:0;
+    width:100%;
+    overflow:hidden!important;
+    overscroll-behavior:none;
+  }
+  body.m2-panel-open .m2-hoja{
+    overflow-y:auto;
+    overscroll-behavior:contain;
+    -webkit-overflow-scrolling:touch;
+    touch-action:pan-y;
+  }
+  .m2-hoja .m2-asa{
+    width:48px;
+    height:6px;
+    margin-bottom:18px;
+    cursor:grab;
+    touch-action:none;
+  }
+  .m2-hoja .m2-asa:active{cursor:grabbing}
+}
+
+
+/* ===== Mi cuenta móvil: misma tarjeta flotante que Nuevo cliente ===== */
+@media (max-width:760px){
+  .account-shell{
+    box-sizing:border-box;
+    padding:
+      calc(env(safe-area-inset-top) + 12px)
+      10px
+      calc(env(safe-area-inset-bottom) + 12px);
+  }
+  .account-shell .account-card{
+    box-sizing:border-box;
+    width:100%;
+    height:100%;
+    max-height:100%;
+    overflow-x:hidden;
+    overflow-y:auto;
+    border-radius:28px;
+    -webkit-overflow-scrolling:touch;
+    overscroll-behavior:contain;
+  }
+}
+
+/* ===== Mi cuenta móvil: cabecera azul como Clientes ===== */
+.account-hero>p{color:#68738a;line-height:1.5}
+@media(max-width:760px){
+  .account-shell .account-card{
+    padding:0;
+    overflow-x:hidden;
+    overflow-y:auto;
+    background:#fff;
+  }
+  .account-hero{
+    position:relative;
+    min-height:190px;
+    box-sizing:border-box;
+    padding:32px 74px 34px 24px;
+    color:#fff;
+    background:linear-gradient(120deg,#0a2f57 0%,#0d2c4e 64%,#124070 100%);
+    border-radius:0 0 28px 28px;
+    overflow:hidden;
+  }
+  .account-hero::after{
+    content:"";
+    position:absolute;
+    width:190px;
+    height:170px;
+    right:18px;
+    top:-34px;
+    background:url('/app-icon.png') center/contain no-repeat;
+    filter:brightness(0) invert(1) blur(.7px);
+    opacity:.10;
+    transform:rotate(-5deg);
+    pointer-events:none;
+  }
+  .account-hero .eyebrow{
+    position:relative;
+    z-index:1;
+    margin:0 0 12px;
+    color:#efe3d5;
+    font-size:12px;
+    font-weight:850;
+    letter-spacing:.18em;
+  }
+  .account-card .account-hero h2{
+    position:relative;
+    z-index:1;
+    max-width:100%;
+    margin:0;
+    color:#fff;
+    font-size:32px;
+    line-height:1.08;
+    overflow-wrap:anywhere;
+  }
+  .account-hero>p:last-child{
+    position:relative;
+    z-index:1;
+    margin:12px 0 0;
+    color:#f4ece3;
+    font-size:14px;
+  }
+  .account-hero .account-close{
+    z-index:2;
+    top:22px;
+    right:20px;
+    width:48px;
+    height:48px;
+    background:rgba(255,255,255,.94);
+    color:#0d2c4e;
+    font-size:29px;
+    box-shadow:0 8px 22px rgba(5,24,44,.18);
+  }
+  .account-content{
+    padding:22px 19px calc(24px + env(safe-area-inset-bottom));
+  }
+  .account-content .view-mode-button{margin-top:0}
+}

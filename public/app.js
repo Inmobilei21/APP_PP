@@ -77,7 +77,7 @@ function authCard({setup=false,users=[]}={}){
 async function checkAuthentication(){try{const status=await apiJson("/api/auth/status");if(status.user){signedInUser=status.user;installMobileChrome();document.documentElement.classList.remove("auth-pending");updateProfileButtons();loadSharedTasks();refreshChatData();refreshBillingData();refreshSuggestions()}else authCard({setup:status.needsSetup,users:status.users})}catch{authCard()}}
 function openAccountPanel(){
   document.querySelector("#accountPanel")?.remove();const shell=document.createElement("div");shell.id="accountPanel";shell.className="account-shell";
-  shell.innerHTML=`<div class="account-backdrop"></div><section class="account-card"><button class="account-close" aria-label="Cerrar">×</button><p class="eyebrow">MI CUENTA</p><h2>${signedInUser.name}</h2><p>${signedInUser.role==="admin"?"Administración de usuarios y contraseñas":"Sesión de usuario"}</p><button class="view-mode-button" type="button"><span>${clientPreviewMode?"▣":"▱"}</span><span><strong>${clientPreviewMode?"Visión como despacho":"Visión como cliente"}</strong><small>${clientPreviewMode?"Volver a la aplicación de gestión":"Abrir la maqueta temporal del portal"}</small></span><b>›</b></button><div class="account-users">${signedInUser.role==="admin"?teamUsers.map(user=>`<form data-user-id="${user.id}"><div><strong>${user.name}</strong><small>${user.role==="admin"?"Administrador":"Usuario"}</small></div><input type="password" minlength="6" placeholder="Nueva contraseña" required><button type="submit">Guardar</button></form>`).join(""):""}</div><p class="account-message"></p><button class="logout-button" type="button">Cerrar sesión</button></section>`;document.body.appendChild(shell);
+  shell.innerHTML=`<div class="account-backdrop"></div><section class="account-card"><header class="account-hero"><button class="account-close" aria-label="Cerrar">×</button><p class="eyebrow">MI CUENTA</p><h2>${escapeHtml(signedInUser.name)}</h2><p>${signedInUser.role==="admin"?"Administración de usuarios y contraseñas":"Sesión de usuario"}</p></header><div class="account-content"><button class="view-mode-button" type="button"><span>${clientPreviewMode?"▣":"▱"}</span><span><strong>${clientPreviewMode?"Visión como despacho":"Visión como cliente"}</strong><small>${clientPreviewMode?"Volver a la aplicación de gestión":"Abrir la maqueta temporal del portal"}</small></span><b>›</b></button><div class="account-users">${signedInUser.role==="admin"?teamUsers.map(user=>`<form data-user-id="${user.id}"><div><strong>${user.name}</strong><small>${user.role==="admin"?"Administrador":"Usuario"}</small></div><input type="password" minlength="6" placeholder="Nueva contraseña" required><button type="submit">Guardar</button></form>`).join(""):""}</div><p class="account-message"></p><button class="logout-button" type="button">Cerrar sesión</button></div></section>`;document.body.appendChild(shell);
   const close=()=>shell.remove();shell.querySelector(".account-close").onclick=close;shell.querySelector(".account-backdrop").onclick=close;
   shell.querySelectorAll("[data-user-id]").forEach(form=>form.onsubmit=async event=>{event.preventDefault();const button=form.querySelector("button"),message=shell.querySelector(".account-message");button.disabled=true;try{await apiJson(`/api/users/${form.dataset.userId}`,{method:"PUT",body:JSON.stringify({password:form.querySelector("input").value})});form.reset();message.textContent="Contraseña actualizada correctamente."}catch(reason){message.textContent=reason.message}finally{button.disabled=false}});
   shell.querySelector(".view-mode-button").onclick=()=>{close();toggleClientPreview()};
@@ -372,6 +372,17 @@ function bindHeader(){const header=main.querySelector(":scope>header");if(header
 
 function syncMobileNavigation(title="Inicio"){
   document.querySelectorAll("[data-mobile-route]").forEach(button=>button.classList.toggle("active",button.dataset.mobileRoute===title));
+  const bar=document.querySelector(".m2-barra");
+  if(!bar)return;
+  bar.querySelectorAll(".m2-tab").forEach(button=>button.classList.remove("active"));
+  const active=title==="Inicio"
+    ?bar.querySelector('[data-mobile-route="Inicio"]')
+    :title==="Clientes"
+      ?bar.querySelector('[data-mobile-route="Clientes"]')
+      :title==="Chat"
+        ?bar.querySelector(".m2-chat")
+        :bar.querySelector(".m2-menu");
+  active?.classList.add("active");
 }
 function mobileRoute(title,after){
   document.querySelector(`nav button[data-title="${title}"]`)?.click();
@@ -3238,6 +3249,7 @@ function toggleWorkerChat(){
   document.body.classList.toggle("chat-open",opening);
   panel.setAttribute("aria-hidden",String(!opening));
   document.querySelector("#chatLauncher").classList.toggle("active",opening);
+  syncMobileNavigation(opening?"Chat":document.querySelector(".sidebar nav button.active")?.dataset.title||"Inicio");
 }
 function closeWorkerChat(){
   const panel=document.querySelector("#chatPanel");
@@ -3245,6 +3257,7 @@ function closeWorkerChat(){
   document.body.classList.remove("chat-open");
   panel.setAttribute("aria-hidden","true");
   document.querySelector("#chatLauncher").classList.remove("active");
+  syncMobileNavigation(document.querySelector(".sidebar nav button.active")?.dataset.title||"Inicio");
 }
 document.addEventListener("keydown",event=>{
   if(event.key!=="Escape")return;
@@ -3661,14 +3674,65 @@ setInterval(refreshSuggestions,15000);
 
   // Barra inferior, acciones rápidas y menú
   let barra,velo;
-  function cerrarHojas(){document.querySelectorAll(".m2-hoja.on").forEach(h=>h.classList.remove("on"));velo?.classList.remove("on");barra?.querySelector(".m2-mas")?.classList.remove("abierto")}
+  function bloquearFondo(){
+    if(document.body.classList.contains("m2-panel-open"))return;
+    const y=window.scrollY;
+    document.body.dataset.m2Scroll=String(y);
+    document.body.style.top=`-${y}px`;
+    document.body.classList.add("m2-panel-open");
+  }
+  function liberarFondo(){
+    if(!document.body.classList.contains("m2-panel-open"))return;
+    const y=Number(document.body.dataset.m2Scroll)||0;
+    document.body.classList.remove("m2-panel-open");
+    document.body.style.top="";
+    delete document.body.dataset.m2Scroll;
+    window.scrollTo(0,y);
+  }
+  function cerrarHojas(){
+    document.querySelectorAll(".m2-hoja.on").forEach(h=>{h.classList.remove("on");h.style.transform="";h.style.transition=""});
+    if(velo){velo.classList.remove("on");velo.style.opacity=""}
+    barra?.querySelector(".m2-mas")?.classList.remove("abierto");
+    liberarFondo();
+  }
+  function instalarArrastre(hoja){
+    const asa=hoja.querySelector(".m2-asa");if(!asa)return;
+    let inicioY=0,desplazamiento=0,arrastrando=false;
+    asa.setAttribute("role","button");asa.setAttribute("aria-label","Cerrar panel");
+    asa.addEventListener("click",cerrarHojas);
+    hoja.addEventListener("touchstart",event=>{
+      if(!event.target.closest(".m2-asa")&&hoja.scrollTop>0)return;
+      inicioY=event.touches[0].clientY;desplazamiento=0;arrastrando=true;
+    },{passive:true});
+    hoja.addEventListener("touchmove",event=>{
+      if(!arrastrando)return;
+      desplazamiento=Math.max(0,event.touches[0].clientY-inicioY);
+      if(!desplazamiento)return;
+      event.preventDefault();
+      hoja.style.transition="none";
+      hoja.style.transform=`translateY(${desplazamiento}px)`;
+      if(velo)velo.style.opacity=String(Math.max(0,1-desplazamiento/360));
+    },{passive:false});
+    const terminar=()=>{
+      if(!arrastrando)return;
+      arrastrando=false;
+      const cerrar=desplazamiento>76;
+      hoja.style.transition="";
+      hoja.style.transform="";
+      if(velo)velo.style.opacity="";
+      desplazamiento=0;
+      if(cerrar)cerrarHojas();
+    };
+    hoja.addEventListener("touchend",terminar,{passive:true});
+    hoja.addEventListener("touchcancel",terminar,{passive:true});
+  }
   function abrirHoja(tipo){
     const hoja=document.querySelector(`.m2-hoja[data-hoja="${tipo}"]`);if(!hoja)return;
     const yaAbierta=hoja.classList.contains("on");cerrarHojas();if(yaAbierta)return;
     if(tipo==="menu")hoja.querySelector(".m2-rejilla").innerHTML=[...document.querySelectorAll(".sidebar nav button[data-title]")].map(b=>`<button type="button" class="m2-acceso" data-m2-ruta="${escapeHtml(b.dataset.title)}"><span>${iconoSeccion(b.dataset.title)}</span>${escapeHtml(b.dataset.title)}</button>`).join("");
     hoja.querySelectorAll("[data-m2-ruta]").forEach(b=>b.onclick=()=>{cerrarHojas();mobileRoute(b.dataset.m2Ruta)});
     refrescarAlertas();
-    hoja.classList.add("on");velo.classList.add("on");if(tipo==="acciones")barra.querySelector(".m2-mas").classList.add("abierto");
+    hoja.classList.add("on");velo.classList.add("on");bloquearFondo();if(tipo==="acciones")barra.querySelector(".m2-mas").classList.add("abierto");
   }
   function instalarBarra(){
     if(barra)return;
@@ -3689,11 +3753,11 @@ setInterval(refreshSuggestions,15000);
       ${op("idea",I.idea,"#FFF6E6","#B7791F","Sugerencia","Propón una mejora para el despacho")}`;
     const menu=document.createElement("section");menu.className="m2-hoja";menu.dataset.hoja="menu";
     menu.innerHTML=`<i class="m2-asa"></i><h3>Todas las secciones</h3><div class="m2-rejilla"></div>`;
-    document.body.append(velo,acciones,menu,barra);
+    instalarArrastre(acciones);instalarArrastre(menu);document.body.append(velo,acciones,menu,barra);
     barra.querySelectorAll("[data-mobile-route]").forEach(b=>b.onclick=()=>{cerrarHojas();mobileRoute(b.dataset.mobileRoute)});
     barra.querySelector(".m2-mas").onclick=()=>abrirHoja("acciones");
     barra.querySelector(".m2-menu").onclick=()=>abrirHoja("menu");
-    barra.querySelector(".m2-chat").onclick=()=>{cerrarHojas();document.querySelector("#chatLauncher")?.click()};
+    barra.querySelector(".m2-chat").onclick=()=>{cerrarHojas();if(document.querySelector("#chatPanel")?.classList.contains("open"))return;document.querySelector("#chatLauncher")?.click()};
     const hacer={tarea:()=>mobileRoute("Tareas","#openTaskModal"),factura:()=>openBillingModal(),cliente:()=>mobileRoute("Gestión","#openNewClient"),
       aviso:()=>mobileRoute("Calendario","#newCalendarItem"),idea:()=>document.querySelector("#suggestionLauncher")?.click()};
     acciones.querySelectorAll("[data-accion]").forEach(b=>b.onclick=()=>{cerrarHojas();hacer[b.dataset.accion]?.()});

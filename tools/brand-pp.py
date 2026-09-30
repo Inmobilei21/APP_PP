@@ -130,6 +130,8 @@ shutil.rmtree(pub / "propymes", ignore_errors=True)
 _idx = (pub / "index.html").read_text(encoding="utf8")
 _idx = re.sub(r'<link rel="stylesheet" href="/despacho-cliente\.css[^"]*">', "", _idx)
 _idx = re.sub(r'<script src="/despacho-cliente\.js[^"]*"></script>', "", _idx)
+_idx = re.sub(r'<link rel="stylesheet" href="/propymes/[^"]*">', "", _idx)
+_idx = re.sub(r'<script src="/propymes/[^"]*"[^>]*></script>', "", _idx)
 (pub / "index.html").write_text(_idx, encoding="utf8")
 for f in ["index.html", "app.js", "styles.css", "manifest.webmanifest"]:
     rebrand(pub / f)
@@ -235,8 +237,15 @@ manifest["share_target"] = {"action": "/compartir", "method": "POST", "enctype":
 shutil.copytree(DEMO / "pdf", pub / "demo", dirs_exist_ok=True)
 shutil.copy2(DEMO / "documentos.json", pub / "demo" / "documentos.json")
 
+# Aviso "Servicio no contratado" con imagen ProPymes: PDF propios y formulario "Más información".
+# Los mismos ficheros van en APP.AM (public/propymes/servicios) para sus clientes de ProPymes.
+shutil.copytree(BRAND / "servicios", pub / "propymes" / "servicios", dirs_exist_ok=True,
+                ignore=shutil.ignore_patterns("marca-pdf.png"))
+
 html = (pub / "index.html").read_text(encoding="utf8")
-html, n = re.subn(r'(<script src="/app\.js[^"]*"></script>)', r'\1<script src="/pp-cliente.js?v=pp22"></script><script src="/pp-gestion.js?v=pp20"></script><script src="/pp-demo.js?v=pp15"></script>', html, count=1)
+html, n = re.subn(r'(<link rel="stylesheet" href="/pp-theme\.css[^"]*">)', r'\1<link rel="stylesheet" href="/propymes/servicios/pp-servicios.css?v=1">', html, count=1)
+assert n == 1, "No se encontró pp-theme.css en index.html"
+html, n = re.subn(r'(<script src="/app\.js[^"]*"></script>)', r'\1<script src="/pp-cliente.js?v=pp22"></script><script src="/propymes/servicios/pp-servicios.js?v=1" data-siempre></script><script src="/pp-gestion.js?v=pp20"></script><script src="/pp-demo.js?v=pp15"></script>', html, count=1)
 assert n == 1, "No se encontró app.js en index.html"
 (pub / "index.html").write_text(html, encoding="utf8")
 
