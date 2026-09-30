@@ -31,6 +31,13 @@
   }
 
   // ------------------------------------------------------------ API: la demo no toca datos reales
+  // Avisos de ejemplo para la tarjeta "Avisos" del inicio (pp-portal.js)
+  const enDias = n => new Date(Date.now() + n * 864e5).toISOString().slice(0, 10);
+  window.PP_AVISOS_DEMO = [
+    { titulo: "Documentación del IVA trimestral", texto: "Envíanos las facturas emitidas y recibidas del trimestre para preparar el modelo 303 a tiempo.", fecha: enDias(-1) },
+    { titulo: "Certificado digital próximo a caducar", texto: "Tu certificado digital caduca en unas semanas. Te ayudamos a renovarlo sin desplazamientos.", fecha: enDias(-6) }
+  ];
+
   const realApiJson = apiJson;
   const chatStore = () => { try { return JSON.parse(storage.get(CHAT_KEY) || "{}"); } catch { return {}; } };
   window.apiJson = async function (url, options = {}) {
