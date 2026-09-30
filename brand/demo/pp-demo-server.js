@@ -3,12 +3,29 @@
 // ningún dato real (WebDAV, clientes, chats…), porque las rutas del despacho exigen la sesión
 // del equipo. En el navegador solo se abre la vista de cliente con documentos ficticios.
 const crypto = require("crypto");
+const fs = require("fs");
+const path = require("path");
 
 const PASSWORD = process.env.PP_DEMO_PASSWORD || "prueba";
 const DEMO_USER = { id: "cliente", name: "Cliente", role: "demo", passwordSet: true };
 const COOKIE = "pp_demo_session";
-const TTL = 12 * 60 * 60 * 1000;
+const TTL = 30 * 24 * 60 * 60 * 1000;
+// Las sesiones se guardan en el volumen de datos para que no se cierren con cada despliegue.
+const dataDirectory = process.env.DATA_DIR || (fs.existsSync("/data") ? "/data" : path.join(__dirname, ".data"));
+const sessionsFile = path.join(dataDirectory, "pp-demo-sessions.json");
 const sessions = new Map();
+try {
+  for (const [key, expires] of Object.entries(JSON.parse(fs.readFileSync(sessionsFile, "utf8")))) if (Number(expires) > Date.now()) sessions.set(key, Number(expires));
+} catch {}
+function saveSessions() {
+  try {
+    fs.mkdirSync(dataDirectory, { recursive: true });
+    const now = Date.now(), temporary = `${sessionsFile}.tmp`;
+    fs.writeFileSync(temporary, JSON.stringify(Object.fromEntries([...sessions].filter(([, expires]) => expires > now))));
+    fs.renameSync(temporary, sessionsFile);
+  } catch {}
+}
+const cookie = (key, maxAge) => `${COOKIE}=${key}; HttpOnly; Secure; SameSite=Strict; Path=/; Max-Age=${maxAge}`;
 
 function token(req) {
   const item = (req.headers.cookie || "").split(";").map(value => value.trim()).find(value => value.startsWith(`${COOKIE}=`));
@@ -17,7 +34,7 @@ function token(req) {
 function active(req) {
   const key = token(req), expires = sessions.get(key);
   if (!expires) return false;
-  if (expires < Date.now()) { sessions.delete(key); return false; }
+  if (expires < Date.now()) { sessions.delete(key); saveSessions(); return false; }
   return true;
 }
 function send(res, status, body, headers = {}) {
@@ -45,15 +62,21 @@ module.exports = function ppDemo(req, res, requestPath) {
       if (supplied.length !== expected.length || !crypto.timingSafeEqual(supplied, expected)) return send(res, 401, { error: "Usuario o contraseña incorrectos." });
       if (sessions.size > 5000) for (const [key, expires] of sessions) if (expires < Date.now()) sessions.delete(key);
       const key = crypto.randomBytes(32).toString("hex");
-      sessions.set(key, Date.now() + TTL);
-      send(res, 200, { user: DEMO_USER }, { "Set-Cookie": `${COOKIE}=${key}; HttpOnly; Secure; SameSite=Strict; Path=/; Max-Age=${TTL / 1000}` });
+      sessions.set(key, Date.now() + TTL); saveSessions();
+      send(res, 200, { user: DEMO_USER }, { "Set-Cookie": cookie(key, TTL / 1000) });
     }).catch(() => send(res, 400, { error: "No se pudo iniciar la demostración." }));
     return true;
   }
 
   const demo = active(req);
   if (requestPath === "/api/auth/status" && req.method === "GET") {
-    if (demo) { send(res, 200, { user: DEMO_USER, needsSetup: false, users: [] }); return true; }
+    if (demo) {
+      // Caduca por inactividad: al abrir la aplicación se renueva (como mucho una vez al día)
+      const key = token(req);
+      if (sessions.get(key) - Date.now() < TTL - 24 * 60 * 60 * 1000) { sessions.set(key, Date.now() + TTL); saveSessions(); }
+      send(res, 200, { user: DEMO_USER, needsSetup: false, users: [] }, { "Set-Cookie": cookie(key, TTL / 1000) });
+      return true;
+    }
     // Sin sesión: se añade "Cliente" a la lista de usuarios de la pantalla de acceso.
     const end = res.end.bind(res);
     res.end = (chunk, ...rest) => {
@@ -66,8 +89,8 @@ module.exports = function ppDemo(req, res, requestPath) {
     return false;
   }
   if (demo && requestPath === "/api/auth/logout" && req.method === "POST") {
-    sessions.delete(token(req));
-    send(res, 200, { ok: true }, { "Set-Cookie": `${COOKIE}=; HttpOnly; Secure; SameSite=Strict; Path=/; Max-Age=0` });
+    sessions.delete(token(req)); saveSessions();
+    send(res, 200, { ok: true }, { "Set-Cookie": cookie("", 0) });
     return true;
   }
   return false;
