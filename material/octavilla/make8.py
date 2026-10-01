@@ -40,32 +40,34 @@ STEPS = [("Escanea", ["el QR o entra en la web"]), ("Accede", ["con tu usuario y
          ("Consulta", ["sin añadir información sensible,", "únicamente datos de prueba"])]
 AVISO = ["Vista previa: por ahora no adjuntes", "ni envíes documentación por la", "aplicación; entrégala por los canales", "habituales del despacho."]
 
+# Reverso con la misma estética que el anverso (fondo arena, logo en panel blanco) y sin
+# bloques azules macizos, que salen mal al imprimir.
 BACK = card(
-    f'<rect width="{W}" height="17" fill="{NAVY}"/>'
-    + img("h-oscuro.png", 7, 4.6, w=34)
-    + t(W - 7, 10.2, "ÁREA DE CLIENTE", 1.9, TAN, "bold", "end", .4)
+    f'<rect width="{W}" height="2.2" fill="{STRIPE}"/>'
+    + f'<rect x="6" y="5.5" width="{W - 12}" height="17" rx="2.2" fill="#fff"/>'
+    + img("h-claro.png", W / 2, 9.7, w=50, anchor="middle")
     # datos de acceso
-    + f'<rect x="6" y="22" width="{W - 12}" height="29" rx="2" fill="#fff" stroke="#e7dccb" stroke-width=".3"/>'
-    + t(10, 27.6, "TUS DATOS DE ACCESO", 1.9, NAVY, "bold", spacing=.45)
-    + t(10, 32.6, "USUARIO", 1.7, TAN_DARK, "bold", spacing=.4)
-    + t(10.5, 37.4, USER, 3.6, NAVY, "bold")
-    + f'<line x1="10" y1="38.6" x2="{W - 10}" y2="38.6" stroke="{NAVY}" stroke-width=".25"/>'
-    + t(10, 42.2, "CONTRASEÑA", 1.7, TAN_DARK, "bold", spacing=.4)
-    + t(10.5, 46.6, PASSWORD, 3.6, NAVY, "bold")
-    + f'<line x1="10" y1="47.8" x2="{W - 10}" y2="47.8" stroke="{NAVY}" stroke-width=".25"/>'
-    # pasos
-    + "".join(f'<circle cx="10" cy="{57 + i * 6.8}" r="2.5" fill="{NAVY}"/>'
-              + t(10, 57.9 + i * 6.8, str(i + 1), 2.6, "#fff", "bold", "middle")
-              + t(14.6, 56.6 + i * 6.8, h, 2.5, NAVY, "bold")
-              + lines(14.6, 59.7 + i * 6.8, b, 2.05, INK, lh=1.35)
+    + f'<rect x="6" y="26" width="{W - 12}" height="27" rx="2" fill="#fff"/>'
+    + t(10, 31.2, "TUS DATOS DE ACCESO", 1.9, NAVY, "bold", spacing=.45)
+    + t(10, 35.6, "USUARIO", 1.7, TAN_DARK, "bold", spacing=.4)
+    + t(10.5, 40, USER, 3.6, NAVY, "bold")
+    + f'<line x1="10" y1="41.2" x2="{W - 10}" y2="41.2" stroke="{STRIPE}" stroke-width=".3"/>'
+    + t(10, 44.6, "CONTRASEÑA", 1.7, TAN_DARK, "bold", spacing=.4)
+    + t(10.5, 49, PASSWORD, 3.6, NAVY, "bold")
+    + f'<line x1="10" y1="50.2" x2="{W - 10}" y2="50.2" stroke="{STRIPE}" stroke-width=".3"/>'
+    # pasos: números en círculo blanco con borde dorado
+    + "".join(f'<circle cx="10" cy="{58.6 + i * 6.6}" r="2.4" fill="#fff" stroke="{STRIPE}" stroke-width=".4"/>'
+              + t(10, 59.5 + i * 6.6, str(i + 1), 2.6, TAN_DARK, "bold", "middle")
+              + t(14.6, 58.2 + i * 6.6, h, 2.5, NAVY, "bold")
+              + lines(14.6, 61.2 + i * 6.6, b, 2.05, INK, lh=1.35)
               for i, (h, b) in enumerate(STEPS))
     # aviso
-    + f'<rect x="6" y="78.4" width="{W - 12}" height="14" rx="1.8" fill="#fff" stroke="{TAN}" stroke-width=".3"/>'
-    + f'<circle cx="10.2" cy="82.6" r="1.6" fill="{TAN}"/>' + t(10.2, 83.45, "!", 2.3, NAVY, "bold", "middle")
-    + lines(13.6, 81.8, AVISO, 1.9, NAVY, lh=1.38)
+    + f'<rect x="6" y="79.6" width="{W - 12}" height="13.4" rx="1.8" fill="#fff" stroke="{STRIPE}" stroke-width=".3"/>'
+    + f'<circle cx="10.2" cy="83.6" r="1.6" fill="{TAN}"/>' + t(10.2, 84.45, "!", 2.3, NAVY, "bold", "middle")
+    + lines(13.6, 82.9, AVISO, 1.9, NAVY, lh=1.36)
     # contacto
-    + f'<line x1="6" y1="94.2" x2="{W - 6}" y2="94.2" stroke="{STRIPE}" stroke-width=".3"/>'
-    + t(W / 2, 98.6, f'{PHONE}  ·  {EMAIL}', 2.05, NAVY, "bold", "middle")
+    + f'<line x1="6" y1="95" x2="{W - 6}" y2="95" stroke="{STRIPE}" stroke-width=".3"/>'
+    + t(W / 2, 99.2, f'{PHONE}  ·  {EMAIL}', 2.05, NAVY, "bold", "middle")
     + f'<rect y="{H - 2.2}" width="{W}" height="2.2" fill="{STRIPE}"/>',
     BG)
 
