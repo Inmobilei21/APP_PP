@@ -245,7 +245,7 @@ shutil.copytree(BRAND / "servicios", pub / "propymes" / "servicios", dirs_exist_
 html = (pub / "index.html").read_text(encoding="utf8")
 html, n = re.subn(r'(<link rel="stylesheet" href="/pp-theme\.css[^"]*">)', r'\1<link rel="stylesheet" href="/propymes/servicios/pp-servicios.css?v=2">', html, count=1)
 assert n == 1, "No se encontró pp-theme.css en index.html"
-html, n = re.subn(r'(<script src="/app\.js[^"]*"></script>)', r'\1<script src="/pp-cliente.js?v=pp22"></script><script src="/propymes/servicios/pp-servicios.js?v=2" data-siempre></script><script src="/propymes/servicios/pp-portal.js?v=1" data-siempre></script><script src="/pp-gestion.js?v=pp20"></script><script src="/pp-demo.js?v=pp16"></script>', html, count=1)
+html, n = re.subn(r'(<script src="/app\.js[^"]*"></script>)', r'\1<script src="/pp-cliente.js?v=pp22"></script><script src="/propymes/servicios/pp-servicios.js?v=2" data-siempre></script><script src="/propymes/servicios/pp-portal.js?v=1" data-siempre></script><script src="/pp-gestion.js?v=pp20"></script><script src="/pp-demo.js?v=pp17"></script>', html, count=1)
 assert n == 1, "No se encontró app.js en index.html"
 (pub / "index.html").write_text(html, encoding="utf8")
 

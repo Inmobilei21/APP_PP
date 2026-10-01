@@ -51,6 +51,14 @@
     }
     if (!isDemo() || url.startsWith("/api/auth/") || url.startsWith("/api/version")) return realApiJson(url, options);
     // Chat de la demo: se guarda solo en este navegador y contesta un mensaje automático.
+    // Adjuntos de la demo: se guardan en este navegador (solo archivos pequeños)
+    if (url === "/api/client-chat/attachments") {
+      const chats = chatStore(), list = chats[body.recipientId] || (chats[body.recipientId] = []), now = new Date().toISOString(), isPdf = body.type === "application/pdf";
+      list.push({ id: `${Date.now()}`, senderId: `client:${clientPreviewName}`, text: isPdf ? `📄 ${body.name}` : "📷 Foto", autoText: true, createdAt: now, readAt: now,
+        attachment: { id: `demo${Date.now()}`, name: body.name, type: body.type, kind: isPdf ? "pdf" : "image", size: Math.round(String(body.data || "").length * 0.75), url: `data:${body.type};base64,${body.data}` } });
+      try { localStorage.setItem(CHAT_KEY, JSON.stringify(chats)); } catch { throw new Error("En la demostración solo se pueden adjuntar archivos pequeños."); }
+      return list;
+    }
     if (url.startsWith("/api/client-chat/messages")) {
       const chats = chatStore();
       if ((options.method || "GET") === "GET") return chats[new URL(url, location.origin).searchParams.get("with")] || [];
