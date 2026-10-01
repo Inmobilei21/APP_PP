@@ -34,7 +34,8 @@ FRONT = card(
     + t(W / 2, 96.2, "app.propymesasesores.es", 2.5, TAN_DARK, "bold", "middle"),
     CREAM)
 
-STEPS = [("Escanea", "el QR o entra en la web"), ("Accede", "con tu usuario y contraseña"), ("Consulta", "tus documentos y escríbenos")]
+STEPS = [("Escanea", ["el QR o entra en la web"]), ("Accede", ["con tu usuario y contraseña"]),
+         ("Consulta", ["sin añadir información sensible,", "únicamente datos de prueba"])]
 AVISO = ["Vista previa: por ahora no adjuntes", "ni envíes documentación por la", "aplicación; entrégala por los canales", "habituales del despacho."]
 
 BACK = card(
@@ -51,15 +52,15 @@ BACK = card(
     + t(10.5, 46.6, PASSWORD, 3.6, NAVY, "bold")
     + f'<line x1="10" y1="47.8" x2="{W - 10}" y2="47.8" stroke="{NAVY}" stroke-width=".25"/>'
     # pasos
-    + "".join(f'<circle cx="10" cy="{57 + i * 7.4}" r="2.5" fill="{NAVY}"/>'
-              + t(10, 57.9 + i * 7.4, str(i + 1), 2.6, "#fff", "bold", "middle")
-              + t(14.6, 56.6 + i * 7.4, h, 2.5, NAVY, "bold")
-              + t(14.6, 59.7 + i * 7.4, b, 2.05, INK)
+    + "".join(f'<circle cx="10" cy="{57 + i * 6.8}" r="2.5" fill="{NAVY}"/>'
+              + t(10, 57.9 + i * 6.8, str(i + 1), 2.6, "#fff", "bold", "middle")
+              + t(14.6, 56.6 + i * 6.8, h, 2.5, NAVY, "bold")
+              + lines(14.6, 59.7 + i * 6.8, b, 2.05, INK, lh=1.35)
               for i, (h, b) in enumerate(STEPS))
     # aviso
-    + f'<rect x="6" y="76.4" width="{W - 12}" height="14.6" rx="1.8" fill="#fff" stroke="{TAN}" stroke-width=".3"/>'
-    + f'<circle cx="10.2" cy="80.8" r="1.6" fill="{TAN}"/>' + t(10.2, 81.65, "!", 2.3, NAVY, "bold", "middle")
-    + lines(13.6, 80.1, AVISO, 1.9, NAVY, lh=1.42)
+    + f'<rect x="6" y="78.4" width="{W - 12}" height="14" rx="1.8" fill="#fff" stroke="{TAN}" stroke-width=".3"/>'
+    + f'<circle cx="10.2" cy="82.6" r="1.6" fill="{TAN}"/>' + t(10.2, 83.45, "!", 2.3, NAVY, "bold", "middle")
+    + lines(13.6, 81.8, AVISO, 1.9, NAVY, lh=1.38)
     # contacto
     + f'<line x1="6" y1="94.2" x2="{W - 6}" y2="94.2" stroke="{TAN}" stroke-width=".3"/>'
     + t(W / 2, 98.6, f'{PHONE}  ·  {EMAIL}', 2.05, NAVY, "bold", "middle")
