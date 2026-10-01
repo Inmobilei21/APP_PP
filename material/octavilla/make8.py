@@ -14,7 +14,8 @@ from make import t, lines, img, qr, TAN, CREAM, TAN_DARK, USER, PASSWORD
 
 # Sin azul: el marino da problemas al imprimir. Textos, QR y logo en negro.
 NAVY, INK = "#141414", "#3a3a3a"
-make.NAVY = NAVY   # color del QR
+QR_GOLD = "#7a5a2e"   # QR y su marco en dorado oscuro (suficiente contraste para escanearse)
+make.NAVY = QR_GOLD
 
 OUT = Path(__file__).parent
 W, H = 297 / 4, 210 / 2          # 74,25 × 105 mm
@@ -35,7 +36,7 @@ FRONT = card(
     + t(W / 2, 38.6, "siempre contigo", 4.6, TAN_DARK, "bold", "middle")
     + lines(W / 2, 44.2, ["Tu documentación y tu asesor,", "en el móvil o el ordenador."], 2.35, INK, anchor="middle")
     + qr(W / 2 - 15, 53, 30, pad=2.2, radius=1.8)
-    + f'<rect x="{W / 2 - 17.6}" y="50.4" width="35.2" height="35.2" rx="2.2" fill="none" stroke="{NAVY}" stroke-width=".45"/>'
+    + f'<rect x="{W / 2 - 17.6}" y="50.4" width="35.2" height="35.2" rx="2.2" fill="none" stroke="{QR_GOLD}" stroke-width=".45"/>'
     + t(W / 2, 91.2, "ESCANÉAME", 2.3, NAVY, "bold", "middle", .5)
     + t(W / 2, 96.2, "app.propymesasesores.es", 2.5, TAN_DARK, "bold", "middle"),
     BG)
