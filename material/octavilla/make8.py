@@ -15,6 +15,8 @@ from make import t, lines, img, qr, NAVY, TAN, CREAM, TAN_DARK, INK, USER, PASSW
 OUT = Path(__file__).parent
 W, H = 297 / 4, 210 / 2          # 74,25 × 105 mm
 PHONE, EMAIL = "677 53 39 27", "info@propymesasesores.es"
+# Fondo arena más intenso que el crema de pantalla: el crema casi no se ve al imprimir
+BG, STRIPE = "#e4d0b3", "#b8925f"
 
 
 def card(content, bg):
@@ -22,9 +24,9 @@ def card(content, bg):
 
 
 FRONT = card(
-    f'<rect width="{W}" height="2.2" fill="{TAN}"/>'
-    + img("h-claro.png", W / 2, 8, w=50, anchor="middle")
-    + f'<line x1="10" y1="24.5" x2="{W - 10}" y2="24.5" stroke="{TAN}" stroke-width=".35"/>'
+    f'<rect width="{W}" height="2.2" fill="{STRIPE}"/>'
+    + f'<rect x="6" y="5.5" width="{W - 12}" height="17" rx="2.2" fill="#fff"/>'
+    + img("h-claro.png", W / 2, 9.7, w=50, anchor="middle")
     + t(W / 2, 33, "Tu área de cliente,", 4.6, NAVY, "bold", "middle")
     + t(W / 2, 38.6, "siempre contigo", 4.6, TAN_DARK, "bold", "middle")
     + lines(W / 2, 44.2, ["Tu documentación y tu asesor,", "en el móvil o el ordenador."], 2.35, INK, anchor="middle")
@@ -32,7 +34,7 @@ FRONT = card(
     + f'<rect x="{W / 2 - 17.6}" y="50.4" width="35.2" height="35.2" rx="2.2" fill="none" stroke="{NAVY}" stroke-width=".45"/>'
     + t(W / 2, 91.2, "ESCANÉAME", 2.3, NAVY, "bold", "middle", .5)
     + t(W / 2, 96.2, "app.propymesasesores.es", 2.5, TAN_DARK, "bold", "middle"),
-    CREAM)
+    BG)
 
 STEPS = [("Escanea", ["el QR o entra en la web"]), ("Accede", ["con tu usuario y contraseña"]),
          ("Consulta", ["sin añadir información sensible,", "únicamente datos de prueba"])]
@@ -62,10 +64,10 @@ BACK = card(
     + f'<circle cx="10.2" cy="82.6" r="1.6" fill="{TAN}"/>' + t(10.2, 83.45, "!", 2.3, NAVY, "bold", "middle")
     + lines(13.6, 81.8, AVISO, 1.9, NAVY, lh=1.38)
     # contacto
-    + f'<line x1="6" y1="94.2" x2="{W - 6}" y2="94.2" stroke="{TAN}" stroke-width=".3"/>'
+    + f'<line x1="6" y1="94.2" x2="{W - 6}" y2="94.2" stroke="{STRIPE}" stroke-width=".3"/>'
     + t(W / 2, 98.6, f'{PHONE}  ·  {EMAIL}', 2.05, NAVY, "bold", "middle")
-    + f'<rect y="{H - 2.2}" width="{W}" height="2.2" fill="{TAN}"/>',
-    CREAM)
+    + f'<rect y="{H - 2.2}" width="{W}" height="2.2" fill="{STRIPE}"/>',
+    BG)
 
 
 def svg(w, h, body):
@@ -76,8 +78,8 @@ def sheet(face, guides):
     cells = "".join(f'<svg x="{c * W}" y="{r * H}" width="{W}" height="{H}" viewBox="0 0 {W} {H}">{face}</svg>'
                     for r in range(2) for c in range(4))
     # líneas de corte finas entre octavillas (solo en el anverso)
-    cuts = "".join(f'<line x1="{c * W}" y1="0" x2="{c * W}" y2="210" stroke="#c9b48f" stroke-width=".15" stroke-dasharray="1 1"/>' for c in range(1, 4))
-    cuts += '<line x1="0" y1="105" x2="297" y2="105" stroke="#c9b48f" stroke-width=".15" stroke-dasharray="1 1"/>'
+    cuts = "".join(f'<line x1="{c * W}" y1="0" x2="{c * W}" y2="210" stroke="#9c7a4c" stroke-width=".15" stroke-dasharray="1 1"/>' for c in range(1, 4))
+    cuts += '<line x1="0" y1="105" x2="297" y2="105" stroke="#9c7a4c" stroke-width=".15" stroke-dasharray="1 1"/>'
     return svg(297, 210, cells + (cuts if guides else ""))
 
 
