@@ -78,8 +78,8 @@
 
   function showThanks(overlay, service, nombre, correo) {
     const body = overlay.querySelector(".client-unavailable-body");
-    body.innerHTML = `<div class="pp-srv-done"><span aria-hidden="true">✓</span><h2>¡Gracias, ${escapeHtml(nombre.split(" ")[0])}!</h2>
-      <p>Hemos recibido tu solicitud sobre <strong>${escapeHtml(service)}</strong>. Te escribiremos a <strong>${escapeHtml(correo)}</strong> muy pronto.</p>
+    body.innerHTML = `<div class="pp-srv-done pp-srv-gracias"><img src="${BASE}logo.png" alt="ProPymes Asesores"><span aria-hidden="true">✓</span><h2>¡Muchas gracias por su mensaje!</h2>
+      <p>Hemos recibido su solicitud sobre <strong>${escapeHtml(service)}</strong>. Pronto le contactaremos en <strong>${escapeHtml(correo)}</strong>.</p>
       <button class="client-unavailable-primary" type="button">Cerrar</button></div>`;
     body.querySelector("button").addEventListener("click", () => overlay.remove());
     body.querySelector("button").focus();

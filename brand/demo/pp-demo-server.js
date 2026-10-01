@@ -88,6 +88,20 @@ module.exports = function ppDemo(req, res, requestPath) {
     };
     return false;
   }
+  // Los mensajes y solicitudes de la demo llegan al chat de Álvaro Molinero (Asesoría Molinero).
+  if (requestPath === "/api/pp-demo/mensaje" && req.method === "POST") {
+    if (!demo) { req.resume(); send(res, 401, { error: "Sesión no válida." }); return true; }
+    readBody(req).then(async input => {
+      const url = String(process.env.PP_PUENTE_URL || "").replace(/\/+$/, ""), clave = String(process.env.PP_PUENTE_CLAVE || "");
+      if (!url || !clave) return send(res, 200, { enviado: false });
+      const campos = {};
+      for (const [key, max] of [["cliente", 80], ["nombre", 80], ["correo", 120], ["telefono", 30], ["servicio", 120], ["texto", 500]]) campos[key] = String(input[key] || "").trim().slice(0, max);
+      campos.tipo = input.tipo === "solicitud" ? "solicitud" : "chat";
+      const respuesta = await fetch(`${url}/api/puente/propymes`, { method: "POST", headers: { "Content-Type": "application/json", "X-Clave": clave }, body: JSON.stringify(campos), signal: AbortSignal.timeout(10000) });
+      send(res, 200, { enviado: respuesta.ok });
+    }).catch(() => send(res, 200, { enviado: false }));
+    return true;
+  }
   if (demo && requestPath === "/api/auth/logout" && req.method === "POST") {
     sessions.delete(token(req)); saveSessions();
     send(res, 200, { ok: true }, { "Set-Cookie": cookie("", 0) });

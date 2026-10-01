@@ -39,13 +39,22 @@
   ];
 
   const realApiJson = apiJson;
+  // Envía el mensaje (o la solicitud de «Más información») al chat de Álvaro Molinero.
+  function reenviar(body) {
+    const texto = String(body.text || ""), solicitud = texto.match(/^Solicitud de información · (.*?) — Nombre: (.*?) · Correo: (.*?) · Teléfono: (.*)$/);
+    const datos = solicitud
+      ? { tipo: "solicitud", servicio: solicitud[1], nombre: solicitud[2], correo: solicitud[3], telefono: /no indicado/.test(solicitud[4]) ? "" : solicitud[4] }
+      : { tipo: "chat", texto, ...(() => { try { return JSON.parse(storage.get("ppDemoContacto") || "{}"); } catch { return {}; } })() };
+    if (solicitud) storage.set("ppDemoContacto", JSON.stringify({ nombre: datos.nombre, correo: datos.correo, telefono: datos.telefono }));
+    realApiJson("/api/pp-demo/mensaje", { method: "POST", body: JSON.stringify({ cliente: clientPreviewName, ...datos }) }).catch(() => {});
+  }
   const chatStore = () => { try { return JSON.parse(storage.get(CHAT_KEY) || "{}"); } catch { return {}; } };
   window.apiJson = async function (url, options = {}) {
     let body = {};
     try { body = JSON.parse(options.body || "{}"); } catch {}
     if (url === "/api/auth/login" && body.userId === DEMO_ID) {
       const result = await realApiJson("/api/pp-demo/login", { method: "POST", body: JSON.stringify({ password: body.password }) });
-      storage.remove(NAME_KEY); storage.remove(CHAT_KEY);
+      storage.remove(NAME_KEY); storage.remove(CHAT_KEY); storage.remove("ppDemoContacto");
       setTimeout(startDemo, 1500);
       return result;
     }
@@ -64,7 +73,8 @@
       if ((options.method || "GET") === "GET") return chats[new URL(url, location.origin).searchParams.get("with")] || [];
       const list = chats[body.recipientId] || (chats[body.recipientId] = []), now = new Date().toISOString();
       list.push({ id: `${Date.now()}`, senderId: `client:${clientPreviewName}`, text: body.text, createdAt: now, readAt: now });
-      list.push({ id: `${Date.now()}r`, senderId: body.recipientId, text: "Gracias por tu mensaje. Esto es una demostración: en la versión definitiva tu asesor te responderá aquí.", createdAt: now });
+      list.push({ id: `${Date.now()}r`, senderId: body.recipientId, text: "Muchas gracias por su mensaje. Pronto nos pondremos en contacto con usted.", createdAt: now });
+      reenviar(body);
       storage.set(CHAT_KEY, JSON.stringify(chats));
       return list;
     }
@@ -168,7 +178,7 @@
   }
   async function logoutDemo() {
     try { await realApiJson("/api/auth/logout", { method: "POST" }); } catch {}
-    storage.remove(NAME_KEY); storage.remove(CHAT_KEY); location.reload();
+    storage.remove(NAME_KEY); storage.remove(CHAT_KEY); storage.remove("ppDemoContacto"); location.reload();
   }
 
   function startDemo() {

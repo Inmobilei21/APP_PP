@@ -92,3 +92,8 @@ html body:not(#s):not(#s):not(#s) .pp-avisos-acc.pp-avisos-hay small{color:#b86e
 .pp-avisos-lista time{display:block;margin-top:6px;color:#a8875a;font-size:12px;font-weight:600}
 .pp-avisos-overlay .pp-srv-done .pp-avisos-vacio svg{width:30px;height:30px}
 .pp-avisos-overlay .pp-srv-body>.client-unavailable-primary{width:100%!important}
+
+/* Agradecimiento tras «Más información»: con el logo de ProPymes */
+.pp-srv-gracias>img{display:block;width:min(190px,60%);height:auto;margin:2px auto 10px}
+.pp-srv-gracias>span{width:52px;height:52px;font-size:24px}
+html body:not(#s):not(#s):not(#s) .pp-srv:has(.pp-srv-gracias) .client-unavailable-card>header .pp-srv-logo{display:none}
