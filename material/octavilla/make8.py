@@ -10,7 +10,11 @@ from pathlib import Path
 import cairosvg
 from pypdf import PdfWriter, PdfReader
 import make
-from make import t, lines, img, qr, NAVY, TAN, CREAM, TAN_DARK, INK, USER, PASSWORD
+from make import t, lines, img, qr, TAN, CREAM, TAN_DARK, USER, PASSWORD
+
+# Sin azul: el marino da problemas al imprimir. Textos, QR y logo en negro.
+NAVY, INK = "#141414", "#3a3a3a"
+make.NAVY = NAVY   # color del QR
 
 OUT = Path(__file__).parent
 W, H = 297 / 4, 210 / 2          # 74,25 × 105 mm
@@ -26,7 +30,7 @@ def card(content, bg):
 FRONT = card(
     f'<rect width="{W}" height="2.2" fill="{STRIPE}"/>'
     + f'<rect x="6" y="5.5" width="{W - 12}" height="17" rx="2.2" fill="#fff"/>'
-    + img("h-claro.png", W / 2, 9.7, w=50, anchor="middle")
+    + img("h-claro-negro.png", W / 2, 9.7, w=50, anchor="middle")
     + t(W / 2, 33, "Tu área de cliente,", 4.6, NAVY, "bold", "middle")
     + t(W / 2, 38.6, "siempre contigo", 4.6, TAN_DARK, "bold", "middle")
     + lines(W / 2, 44.2, ["Tu documentación y tu asesor,", "en el móvil o el ordenador."], 2.35, INK, anchor="middle")
@@ -45,7 +49,7 @@ AVISO = ["Vista previa: por ahora no adjuntes", "ni envíes documentación por l
 BACK = card(
     f'<rect width="{W}" height="2.2" fill="{STRIPE}"/>'
     + f'<rect x="6" y="5.5" width="{W - 12}" height="17" rx="2.2" fill="#fff"/>'
-    + img("h-claro.png", W / 2, 9.7, w=50, anchor="middle")
+    + img("h-claro-negro.png", W / 2, 9.7, w=50, anchor="middle")
     # datos de acceso
     + f'<rect x="6" y="26" width="{W - 12}" height="27" rx="2" fill="#fff"/>'
     + t(10, 31.2, "TUS DATOS DE ACCESO", 1.9, NAVY, "bold", spacing=.45)
