@@ -147,24 +147,25 @@ C = page(
     + "</g>",
     "#fff")
 
-variants = {"A-marino": A, "B-crema": B, "C-recortable": C}
-for name, svg in variants.items():
-    (OUT / f"octavilla-{name}.svg").write_text(svg, encoding="utf8")
-    cairosvg.svg2png(bytestring=svg.encode(), write_to=str(OUT / f"octavilla-{name}.png"), output_width=1240)
-    cairosvg.svg2pdf(bytestring=svg.encode(), write_to=str(OUT / f"octavilla-{name}-A5.pdf"))
-    # A4 apaisado con 2 octavillas A5 para imprimir en casa
-    body = svg[svg.index(">") + 1:-6]
-    a4 = (f'<svg xmlns="http://www.w3.org/2000/svg" width="297mm" height="210mm" viewBox="0 0 297 210"><rect width="297" height="210" fill="#fff"/>'
-          f'<svg x="0" y="0" width="{W}" height="{H}" viewBox="0 0 {W} {H}">{body}</svg>'
-          f'<svg x="{297 - W}" y="0" width="{W}" height="{H}" viewBox="0 0 {W} {H}">{body}</svg></svg>')
-    cairosvg.svg2pdf(bytestring=a4.encode(), write_to=str(OUT / f"octavilla-{name}-2xA4.pdf"))
+if __name__ == "__main__":
+    variants = {"A-marino": A, "B-crema": B, "C-recortable": C}
+    for name, svg in variants.items():
+        (OUT / f"octavilla-{name}.svg").write_text(svg, encoding="utf8")
+        cairosvg.svg2png(bytestring=svg.encode(), write_to=str(OUT / f"octavilla-{name}.png"), output_width=1240)
+        cairosvg.svg2pdf(bytestring=svg.encode(), write_to=str(OUT / f"octavilla-{name}-A5.pdf"))
+        # A4 apaisado con 2 octavillas A5 para imprimir en casa
+        body = svg[svg.index(">") + 1:-6]
+        a4 = (f'<svg xmlns="http://www.w3.org/2000/svg" width="297mm" height="210mm" viewBox="0 0 297 210"><rect width="297" height="210" fill="#fff"/>'
+              f'<svg x="0" y="0" width="{W}" height="{H}" viewBox="0 0 {W} {H}">{body}</svg>'
+              f'<svg x="{297 - W}" y="0" width="{W}" height="{H}" viewBox="0 0 {W} {H}">{body}</svg></svg>')
+        cairosvg.svg2pdf(bytestring=a4.encode(), write_to=str(OUT / f"octavilla-{name}-2xA4.pdf"))
 
-# comparativa
-ims = [Image.open(OUT / f"octavilla-{n}.png").convert("RGB") for n in variants]
-w, h = ims[0].size; s = .5
-ims = [i.resize((int(w * s), int(h * s))) for i in ims]
-grid = Image.new("RGB", (ims[0].width * 3 + 40, ims[0].height + 20), "#d9d9d9")
-for k, im in enumerate(ims):
-    grid.paste(im, (10 + k * (im.width + 10), 10))
-grid.save(OUT / "octavillas-comparativa.png")
-print("ok")
+    # comparativa
+    ims = [Image.open(OUT / f"octavilla-{n}.png").convert("RGB") for n in variants]
+    w, h = ims[0].size; s = .5
+    ims = [i.resize((int(w * s), int(h * s))) for i in ims]
+    grid = Image.new("RGB", (ims[0].width * 3 + 40, ims[0].height + 20), "#d9d9d9")
+    for k, im in enumerate(ims):
+        grid.paste(im, (10 + k * (im.width + 10), 10))
+    grid.save(OUT / "octavillas-comparativa.png")
+    print("ok")
