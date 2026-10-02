@@ -100,11 +100,11 @@
 
   // ------------------------------------------------------------ chat: solo Álvaro
   // Especialidad de cada asesor (en pequeño, bajo el nombre) y el resto del equipo, bloqueado.
-  const ESPECIALIDAD = { alvaro: "Asesor fiscal", araceli: "IRPF", francisco: "IVA y Sociedades" };
+  const ESPECIALIDAD = { alvaro: "Asesor fiscal", jesus: "Subvenciones y licitaciones", araceli: "IRPF", francisco: "IVA y Sociedades" };
   const EQUIPO_EXTRA = [
     ["manuel-mm", "Manuel MM", "MM", "Perito mercantil"],
     ["jose-antonio", "José Antonio", "JA", "Asesor agrario y cooperativas"],
-    ["alvaro-moya", "Álvaro Moya", "AM", "Asesor laboral"],
+    ["alvaro-moya", "Álvaro M.", "ÁM", "Asesor laboral"],
     ["manuel-mf", "Manuel MF", "MF", "Auditor de cuentas"]
   ];
   function bloquearAsesores() {
