@@ -99,15 +99,31 @@
   }
 
   // ------------------------------------------------------------ chat: solo Álvaro
+  // Especialidad de cada asesor (en pequeño, bajo el nombre) y el resto del equipo, bloqueado.
+  const ESPECIALIDAD = { alvaro: "Asesor fiscal", araceli: "IRPF", francisco: "IVA y Sociedades" };
+  const EQUIPO_EXTRA = [
+    ["manuel-mm", "Manuel MM", "MM", "Perito mercantil"],
+    ["jose-antonio", "José Antonio", "JA", "Asesor agrario y cooperativas"],
+    ["alvaro-moya", "Álvaro Moya", "AM", "Asesor laboral"],
+    ["manuel-mf", "Manuel MF", "MF", "Auditor de cuentas"]
+  ];
   function bloquearAsesores() {
+    document.querySelectorAll(".client-chat-advisors:not([data-pp-equipo])").forEach(lista => {
+      lista.dataset.ppEquipo = "";
+      lista.insertAdjacentHTML("beforeend", EQUIPO_EXTRA.map(([id, nombre, iniciales]) => `<button type="button" data-client-advisor="${id}" data-pp-extra><span>${iniciales}</span><div><strong>${escapeHtml(nombre)}</strong><small></small></div><b>›</b></button>`).join(""));
+    });
     document.querySelectorAll(`.client-chat-advisors button[data-client-advisor]:not([data-client-advisor="${ADVISOR}"]):not(.pp-bloqueado)`).forEach(boton => {
       const copia = boton.cloneNode(true);
       copia.classList.add("pp-bloqueado"); copia.disabled = true; copia.setAttribute("aria-disabled", "true");
       copia.title = "No disponible por ahora";
-      const aviso = copia.querySelector("small"); if (aviso) aviso.textContent = "No disponible";
+      const aviso = copia.querySelector("small"), extra = EQUIPO_EXTRA.find(item => item[0] === boton.dataset.clientAdvisor);
+      if (aviso) aviso.textContent = ESPECIALIDAD[boton.dataset.clientAdvisor] || (extra && extra[3]) || "No disponible";
+      if (aviso && aviso.textContent !== "No disponible") aviso.classList.add("pp-especialidad");
       const flecha = copia.querySelector("b"); if (flecha) flecha.outerHTML = `<i class="pp-candado">${LOCK}</i>`;
       boton.replaceWith(copia);
     });
+    const propio = document.querySelector(`.client-chat-advisors button[data-client-advisor="${ADVISOR}"] small:not(.pp-especialidad)`);
+    if (propio && ESPECIALIDAD[ADVISOR]) { propio.textContent = ESPECIALIDAD[ADVISOR]; propio.classList.add("pp-especialidad"); }
   }
 
   // ------------------------------------------------------------ contacto

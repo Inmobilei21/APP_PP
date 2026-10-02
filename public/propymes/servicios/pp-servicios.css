@@ -97,3 +97,5 @@ html body:not(#s):not(#s):not(#s) .pp-avisos-acc.pp-avisos-hay small{color:#b86e
 .pp-srv-gracias>img{display:block;width:min(190px,60%);height:auto;margin:2px auto 10px}
 .pp-srv-gracias>span{width:52px;height:52px;font-size:24px}
 html body:not(#s):not(#s):not(#s) .pp-srv:has(.pp-srv-gracias) .client-unavailable-card>header .pp-srv-logo{display:none}
+/* Chat: especialidad del asesor, discreta bajo el nombre */
+html body:not(#s):not(#s):not(#s) .client-chat-advisors small.pp-especialidad{font-size:11px!important;letter-spacing:.01em;opacity:.85}
