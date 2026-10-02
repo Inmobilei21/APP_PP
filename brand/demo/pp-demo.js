@@ -197,6 +197,14 @@
   html.pp-demo-activa body aside#sidebar#sidebar,html.pp-demo-activa #chatLauncher,html.pp-demo-activa .suggestions-launcher{display:none!important}
   html.pp-demo-activa .document-preview-shell{z-index:3200!important}
   .pp-demo-modal{position:fixed;inset:0;z-index:5000;display:grid;place-items:center;padding:18px;background:rgba(7,33,61,.72);backdrop-filter:blur(6px);font-family:Inter,ui-sans-serif,-apple-system,"Segoe UI",sans-serif}
+  /* Con la ventana de la demo abierta no se ve nada de detrás (ni la página ni el fondo blanco) */
+  html:has(.pp-demo-modal),html:has(.pp-demo-modal) body{background:#0b2440!important;overflow:hidden!important}
+  html:has(.pp-demo-modal) body>:not(.pp-demo-modal):not(script):not(style){visibility:hidden!important}
+  .pp-demo-modal{background:radial-gradient(120% 80% at 50% 30%,#123a66 0%,#0b2440 55%,#071a30 100%)!important;backdrop-filter:none!important;bottom:auto!important;height:100%;overflow:auto;overscroll-behavior:contain;padding:calc(env(safe-area-inset-top,0px) + 18px) 18px calc(env(safe-area-inset-bottom,0px) + 18px)!important}
+  .pp-demo-modal.pp-teclado{place-items:start center!important;padding-top:calc(env(safe-area-inset-top,0px) + 12px)!important}
+  .pp-demo-modal.pp-teclado .pp-demo-card{padding:20px 22px 18px;gap:10px}
+  .pp-demo-modal.pp-teclado .pp-demo-card>img,.pp-demo-modal.pp-teclado .pp-demo-card>p:not(.pp-demo-eyebrow),.pp-demo-modal.pp-teclado .pp-demo-card>small{display:none}
+  .pp-demo-modal.pp-teclado .pp-demo-card h2{font-size:21px}
   .pp-demo-card{width:min(440px,100%);background:#fbf8f3;border-radius:22px;padding:30px 28px 24px;box-shadow:0 30px 80px rgba(0,0,0,.35);border-top:5px solid #d2b48c;display:flex;flex-direction:column;gap:12px;color:#07213d}
   .pp-demo-card img{width:190px;margin:0 auto 6px}
   .pp-demo-eyebrow{margin:0;font-size:11px;font-weight:800;letter-spacing:.16em;color:#8a6a3e}
@@ -221,4 +229,19 @@
   .pp-demo-list .client-document-row small{color:#7b8794}
   .pp-demo-list .client-document-row b{color:#8a6a3e;font-size:13px}`;
   document.head.appendChild(style);
+
+  // Teclado del móvil: la ventana se ajusta a la zona visible (no se sube todo) y se compacta para que se vea entera.
+  function ajustarModal() {
+    const modal = document.querySelector(".pp-demo-modal"); if (!modal) return;
+    const vv = window.visualViewport, alto = vv ? vv.height : window.innerHeight, arriba = vv ? vv.offsetTop : 0;
+    const teclado = alto < window.innerHeight * 0.8;
+    modal.style.top = `${Math.max(0, arriba)}px`; modal.style.height = `${alto}px`;
+    modal.classList.toggle("pp-teclado", Boolean(teclado));
+    if (teclado) modal.scrollTop = 0;
+  }
+  if (window.visualViewport) { visualViewport.addEventListener("resize", ajustarModal); visualViewport.addEventListener("scroll", ajustarModal); }
+  window.addEventListener("resize", ajustarModal);
+  document.addEventListener("focusin", event => { if (event.target.closest?.(".pp-demo-modal")) { ajustarModal(); setTimeout(ajustarModal, 120); setTimeout(ajustarModal, 400); } });
+  document.addEventListener("focusout", event => { if (event.target.closest?.(".pp-demo-modal")) setTimeout(ajustarModal, 150); });
+  new MutationObserver(ajustarModal).observe(document.body, { childList: true });
 })();
