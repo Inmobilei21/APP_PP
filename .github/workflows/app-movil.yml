@@ -8,8 +8,13 @@ name: App móvil
 on:
   push:
     branches: [main, "claude/**"]
-    paths: ["mobile/**", ".github/workflows/app-movil.yml"]
+    paths: ["mobile/**", "!mobile/tienda/**", "!mobile/**/*.md", ".github/workflows/app-movil.yml"]   # bocetos y textos de la tienda no recompilan
   workflow_dispatch:
+
+concurrency:
+  group: app-movil-${{ github.ref }}
+  cancel-in-progress: true
+
 
 jobs:
   android:
