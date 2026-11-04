@@ -8,8 +8,14 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <!-- Icono y color de las notificaciones (Firebase) -->
-        <meta-data android:name="com.google.firebase.messaging.default_notification_icon" android:resource="@drawable/ic_stat_pp" />
-        <meta-data android:name="com.google.firebase.messaging.default_notification_color" android:resource="@color/pp_notificacion" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/ic_stat_pp"
+        />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/pp_notificacion"
+        />
 
         <activity
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|smallestScreenSize|screenLayout|uiMode|navigation|density"

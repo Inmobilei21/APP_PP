@@ -8,8 +8,16 @@
   const Cap = window.Capacitor;
   if (!Cap?.isNativePlatform?.()) return;
   document.documentElement.classList.add("app-nativa");
-  // Barra de estado con iconos oscuros: las cabeceras del área de cliente son claras (arena / crema).
-  Cap.Plugins?.StatusBar?.setStyle?.({ style: "LIGHT" }).catch?.(() => {});
+  // Barra de estado: iconos blancos sobre la pantalla de acceso (marino) y oscuros en el resto
+  // (las cabeceras del área de cliente son claras: arena / crema).
+  const SB = Cap.Plugins?.StatusBar;
+  let estilo = "";
+  const barra = () => {
+    const acceso = Boolean(document.querySelector(".l2-form")?.offsetParent);
+    const nuevo = acceso ? "DARK" : "LIGHT";
+    if (SB && nuevo !== estilo) { estilo = nuevo; SB.setStyle({ style: nuevo }).catch(() => {}); }
+  };
+  barra(); setInterval(barra, 800);
   const Push = Cap.Plugins?.PushNotifications;
   const platform = Cap.getPlatform();
   const KEY = "ppTokenNativo";

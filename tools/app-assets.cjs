@@ -16,9 +16,10 @@ const canvas = (size, bg) => sharp({ create: { width: size, height: size, channe
   await canvas(1024, CREAM).composite([{ input: markIcon, gravity: "center" }]).png().toFile(path.join(OUT, "icon-only.png"));
   await canvas(1024, { r: 0, g: 0, b: 0, alpha: 0 }).composite([{ input: markFg, gravity: "center" }]).png().toFile(path.join(OUT, "icon-foreground.png"));
   await canvas(1024, CREAM).png().toFile(path.join(OUT, "icon-background.png"));
-  // Arranque: logo horizontal en crema (claro) y vertical blanco/arena en marino (oscuro)
-  await canvas(2732, CREAM).composite([{ input: await fit(horiz, 1300, 1300), gravity: "center" }]).png().toFile(path.join(OUT, "splash.png"));
-  await canvas(2732, NAVY).composite([{ input: await fit(await trim("vertical-arena-blanco.png"), 900, 900), gravity: "center" }]).png().toFile(path.join(OUT, "splash-dark.png"));
+  // Arranque: logo horizontal en crema (claro) y vertical blanco/arena en marino (oscuro).
+  // En vertical el móvil solo enseña la franja central (~1260 px de ancho): el logo no debe pasar de ~1000.
+  await canvas(2732, CREAM).composite([{ input: await fit(horiz, 1000, 1000), gravity: "center" }]).png().toFile(path.join(OUT, "splash.png"));
+  await canvas(2732, NAVY).composite([{ input: await fit(await trim("vertical-arena-blanco.png"), 760, 760), gravity: "center" }]).png().toFile(path.join(OUT, "splash-dark.png"));
   // Logo de la página «Sin conexión»
   await sharp(await fit(horiz, 900, 900)).toFile(path.join(WWW, "logo.png"));
   console.log("ok");
