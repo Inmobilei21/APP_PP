@@ -1,0 +1,27 @@
+{
+  "appId": "es.propymesasesores.app",
+  "appName": "ProPymes Asesores",
+  "webDir": "www",
+  "server": {
+    "url": "https://app.propymesasesores.es",
+    "allowNavigation": ["app.propymesasesores.es"],
+    "errorPath": "sin-conexion.html"
+  },
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 1500,
+      "launchAutoHide": true,
+      "backgroundColor": "#f4ede5",
+      "showSpinner": false
+    },
+    "PushNotifications": {
+      "presentationOptions": ["badge", "sound", "alert"]
+    }
+  },
+  "android": {
+    "allowMixedContent": false
+  },
+  "ios": {
+    "scheme": "ProPymes Asesores"
+  }
+}

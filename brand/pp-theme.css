@@ -273,3 +273,6 @@ html body.pp-molinero:not(#pp):not(#pp) .client-fiscal-header *::before,html bod
   html body:has(.modal-shell.open,.account-shell):not(.client-preview-mode):not(#x) #sidebar:not(:hover) nav button.active::before,
   html body:has(.modal-shell.open,.account-shell):not(.client-preview-mode):not(#x) #sidebar:not(:hover) nav button.active::after{display:none!important}
 }
+/* Notificaciones en «Mi cuenta»: colores ProPymes */
+#accountPanel .nt-switch:checked{background:#07213d!important}
+#accountPanel .nt-test,#accountPanel .nt-msg{color:#07213d!important}

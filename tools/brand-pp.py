@@ -13,7 +13,7 @@ from pathlib import Path
 
 AM, PP = Path(sys.argv[1]).resolve(), Path(sys.argv[2]).resolve()
 BRAND = PP / "brand"          # logos fuente de ProPymes (se conservan en el repo PP)
-KEEP = {".git", "brand", "tools"}
+KEEP = {".git", ".github", "brand", "tools", "mobile", "material"}   # lo propio de PP: no se borra al regenerar
 
 # ---------------------------------------------------------------- 1. copiar código
 for item in PP.iterdir():
@@ -247,6 +247,32 @@ html, n = re.subn(r'(<link rel="stylesheet" href="/pp-theme\.css[^"]*">)', r'\1<
 assert n == 1, "No se encontró pp-theme.css en index.html"
 html, n = re.subn(r'(<script src="/app\.js[^"]*"></script>)', r'\1<script src="/pp-cliente.js?v=pp22"></script><script src="/propymes/servicios/pp-servicios.js?v=3" data-siempre></script><script src="/propymes/servicios/pp-portal.js?v=3" data-siempre></script><script src="/pp-gestion.js?v=pp20"></script><script src="/pp-demo.js?v=pp19"></script>', html, count=1)
 assert n == 1, "No se encontró app.js en index.html"
+(pub / "index.html").write_text(html, encoding="utf8")
+
+# ---------------------------------------------------------------- 6. app nativa (iPhone / Android)
+# Proyecto Capacitor en mobile/. En la web: pp-app-nativa.js (solo actúa dentro de la app) y, en el
+# servidor, push-nativo.js manda los mismos avisos de push.js por Apple (APNs) y Google (FCM).
+APPN = BRAND / "app-nativa"
+shutil.copy2(APPN / "pp-app-nativa.js", pub / "pp-app-nativa.js")
+shutil.copy2(APPN / "push-nativo.js", PP / "push-nativo.js")
+shutil.copy2(APPN / "privacidad.html", pub / "privacidad.html")   # política de privacidad (la piden las tiendas)
+push_js = open(PP / "push.js", encoding="utf8", newline="").read()
+assert "module.exports = function" in push_js, "push.js ha cambiado: revisar el enganche de las notificaciones nativas"
+push_js += """
+// ---- PP · los mismos avisos también a la app nativa (añadido por tools/brand-pp.py) ----
+{
+  const web = module.exports;
+  module.exports = function (options) {
+    const api = web(options), nativo = require("./push-nativo")(options, api.TYPES);
+    return { ...api, notify(...args) { api.notify(...args); nativo.notify(...args); },
+      handle: (req, res, requestPath) => nativo.handle(req, res, requestPath) || api.handle(req, res, requestPath) };
+  };
+}
+"""
+open(PP / "push.js", "w", encoding="utf8", newline="").write(push_js)
+html = (pub / "index.html").read_text(encoding="utf8")
+html, n = re.subn(r"</body>", '<script src="/pp-app-nativa.js?v=1"></script>\n</body>', html, count=1)
+assert n == 1
 (pub / "index.html").write_text(html, encoding="utf8")
 
 srv = open(PP / "server.js", encoding="utf8", newline="").read()

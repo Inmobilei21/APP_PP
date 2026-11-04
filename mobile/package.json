@@ -1,0 +1,23 @@
+{
+  "name": "propymes-app",
+  "version": "1.0.0",
+  "private": true,
+  "description": "App de ProPymes Asesores para iPhone y Android (Capacitor). Abre el área de cliente de app.propymesasesores.es.",
+  "scripts": {
+    "assets": "capacitor-assets generate --iconBackgroundColor '#f4ede5' --splashBackgroundColor '#f4ede5' --splashBackgroundColorDark '#07213d'",
+    "sync": "cap sync"
+  },
+  "dependencies": {
+    "@capacitor/android": "^8.6.0",
+    "@capacitor/app": "^8.1.2",
+    "@capacitor/cli": "^8.6.0",
+    "@capacitor/core": "^8.6.0",
+    "@capacitor/ios": "^8.6.0",
+    "@capacitor/push-notifications": "^8.1.3",
+    "@capacitor/splash-screen": "^8.0.2",
+    "@capacitor/status-bar": "^8.0.4"
+  },
+  "devDependencies": {
+    "@capacitor/assets": "^4.0.0"
+  }
+}

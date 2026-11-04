@@ -1,0 +1,66 @@
+# Compila la app de ProPymes (carpeta mobile/) para Android e iPhone.
+# - Android: genera un APK de prueba que se puede instalar directamente en el móvil (artefacto «propymes-android»).
+# - iPhone: comprueba que el proyecto compila (en simulador, sin firmar). La versión firmada para la App Store
+#   se añadirá cuando la cuenta de Apple Developer esté activa.
+# Si existe el secreto GOOGLE_SERVICES_JSON (archivo de Firebase), el APK incluye las notificaciones.
+name: App móvil
+
+on:
+  push:
+    branches: [main, "claude/**"]
+    paths: ["mobile/**", ".github/workflows/app-movil.yml"]
+  workflow_dispatch:
+
+jobs:
+  android:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: mobile
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: mobile/package-lock.json
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+      - run: npm ci
+      - run: npx cap sync android
+      - name: Configuración de Firebase (si está)
+        env:
+          GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON }}
+        run: if [ -n "$GOOGLE_SERVICES_JSON" ]; then printf '%s' "$GOOGLE_SERVICES_JSON" > android/app/google-services.json; fi
+      - name: Compilar APK
+        working-directory: mobile/android
+        run: ./gradlew --no-daemon assembleDebug
+      - run: cp android/app/build/outputs/apk/debug/app-debug.apk propymes-asesores.apk
+      - uses: actions/upload-artifact@v4
+        with:
+          name: propymes-android
+          path: mobile/propymes-asesores.apk
+
+  ios:
+    runs-on: macos-15
+    defaults:
+      run:
+        working-directory: mobile
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: mobile/package-lock.json
+      - run: npm ci
+      - run: npx cap sync ios
+      - name: Compilar para simulador (sin firmar)
+        working-directory: mobile/ios/App
+        run: |
+          xcodebuild -project App.xcodeproj -scheme App -configuration Debug \
+            -sdk iphonesimulator -destination 'generic/platform=iOS Simulator' \
+            CODE_SIGNING_ALLOWED=NO build | tail -40
+          test ${PIPESTATUS[0]} -eq 0

@@ -85,3 +85,13 @@ module.exports = function ({ dataDirectory, json, readJson, requireUser, subject
   }
   return { notify, handle, TYPES };
 };
+
+// ---- PP · los mismos avisos también a la app nativa (añadido por tools/brand-pp.py) ----
+{
+  const web = module.exports;
+  module.exports = function (options) {
+    const api = web(options), nativo = require("./push-nativo")(options, api.TYPES);
+    return { ...api, notify(...args) { api.notify(...args); nativo.notify(...args); },
+      handle: (req, res, requestPath) => nativo.handle(req, res, requestPath) || api.handle(req, res, requestPath) };
+  };
+}
